@@ -1,12 +1,42 @@
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
     let Portfolio = sequelize.define("Portfolio", {
         date: DataTypes.DATE,
-        ticker: DataTypes.STRING,
-        shares: DataTypes.INTEGER,
-        purchasePrice: DataTypes.DECIMAL,
+        ticker: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                len: [1, 10]
+            }
+        },
+        shares: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            validate: {
+                min: 1
+            }
+        },
+        purchasePrice: {
+            type: DataTypes.DECIMAL,
+            allowNull: false,
+            validate: {
+                min: 0
+            }
+        },
         sellDate: DataTypes.DATE,
-        sellPrice: DataTypes.DECIMAL,
-        soldShares: DataTypes.INTEGER,
+        sellPrice: {
+            type: DataTypes.DECIMAL,
+            allowNull: false,
+            validate: {
+                min: 0
+            }
+        },
+        soldShares: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            validate: {
+                min: 1
+            }
+        },
     });
     return Portfolio
 }
