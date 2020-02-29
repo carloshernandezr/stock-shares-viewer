@@ -10,12 +10,20 @@ const db = require("../models");
 // =============================================================
 module.exports = function(app) {
   app.get("/api/watchlist", function(req, res) {
-    db.Watchlist.findAll().then(function(result) {
+    db.Group.findAll({
+      include: db.Watchlist,
+      // where: db.Group.groupId = 1
+    }).then(function(result) {
         return res.json(result);
     })
   });
-  app.get("/api/portfolio", function(req, res) {
-    db.Portfolio.findAll().then(function(result) {
+  app.get("/api/watchlist/:groupId", function(req, res) {
+    let id = (req.params.groupId);
+    db.Watchlist.findAll({
+      where: {
+        groupId: id
+      }
+    }).then(function(result) {
         return res.json(result);
     })
   });
