@@ -38,5 +38,14 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
     });
+
+    // ADD ASSOCIATIONS HERE
+    Portfolio.associate = function (models) {
+        Portfolio.belongsTo(models.Group, {
+            foreignKey: {
+                allowNull: false
+            }
+        })
+    };
     return Portfolio
 }
