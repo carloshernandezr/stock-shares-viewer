@@ -16,7 +16,7 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
         purchasePrice: {
-            type: DataTypes.DECIMAL,
+            type: DataTypes.DECIMAL(10, 2),
             allowNull: false,
             validate: {
                 min: 0
@@ -24,7 +24,7 @@ module.exports = function (sequelize, DataTypes) {
         },
         sellDate: DataTypes.DATE,
         sellPrice: {
-            type: DataTypes.DECIMAL,
+            type: DataTypes.DECIMAL(10, 2),
             allowNull: false,
             validate: {
                 min: 0
