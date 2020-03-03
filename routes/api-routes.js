@@ -27,4 +27,13 @@ module.exports = function(app) {
         return res.json(result);
     })
   });
+
+  app.post("/api/watchlist/clear", function(req, res) {
+    // Empty out the arrays of data
+    tableData.length = 0;
+    waitListData.length = 0;
+
+    res.json({ ok: true });
+  });
+ 
 };
