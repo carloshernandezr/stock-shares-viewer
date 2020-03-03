@@ -20,13 +20,13 @@ module.exports = function(app) {
 
   // index route loads view.html
   app.get("/", function(req, res) {
-    res.sendFile(path.join(__dirname, "../public/view.html"));
+    res.sendFile(path.join(__dirname, "../views/index.html"));
   });
 
   // add route loads the add.html page,
   // where users can enter new characters to the db
-  app.get("/add", function(req, res) {
-    res.sendFile(path.join(__dirname, "../public/add.html"));
+  app.get("/watchlist", function(req, res) {
+    res.sendFile(path.join(__dirname, "../views/watchlist.html"));
   });
 
   // all route loads the all.html page,
