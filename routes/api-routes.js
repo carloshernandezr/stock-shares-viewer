@@ -36,23 +36,5 @@ module.exports = function (app) {
       .then(function (result) {
         console.log("API result: ", result.data);
       });
-    // $.ajax({
-    //   url: `https://sandbox.iexapis.com/stable/stock/market/batch?symbols=aapl&types=quote&token=Tpk_34cea288c0494864ae04a08d5ad02dc2`,
-    //   method: 'GET'
-    // }).then(function (result) {
-    //   console.log(result);
-    // })
   })
-  // then(function({ username }) {
-  //   const queryUrl = `https://api.github.com/users/${username}/repos?per_page=100`;
-
-  //   axios.get(queryUrl).then(function(res) {
-  //     const repoNames = res.data.map(function(repo) {
-  //       return repo.name;
-  //     });
-
-  // .then(function (result) {
-  //   //Then logic
-  //   console.log(result);
-  // });
 };
