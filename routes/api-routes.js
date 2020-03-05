@@ -7,8 +7,8 @@
 const db = require('../models')
 const axios = require('axios')
 
-//Variables
-const sandboxApiKey = 'Tpk_34cea288c0494864ae04a08d5ad02dc2';
+// Variables
+const sandboxApiKey = 'Tpk_34cea288c0494864ae04a08d5ad02dc2'
 
 // Routes
 // =============================================================
@@ -32,11 +32,18 @@ module.exports = function (app) {
     })
   })
   app.get('/api/watchlist/search/:ticker', function (req, res) {
-    const ticker = (req.params.ticker)
-    const queryUrl = `https://sandbox.iexapis.com/stable/stock/market/batch?symbols=${ticker}&types=quote&token=${sandboxApiKey}`;
+    const ticker = (req.params.ticker).toUpperCase();
+    const queryUrl = `https://sandbox.iexapis.com/stable/stock/market/batch?symbols=${ticker}&types=quote&token=${sandboxApiKey}`
     axios.get(queryUrl)
       .then(function (result) {
-        console.log('API result: ', result.data)
+        const data = {
+          company: result.data[ticker].quote.companyName,
+          symbol: result.data[ticker].quote.symbol,
+          exchange: result.data[ticker].quote.primaryExchange,
+          currentPrice: result.data[ticker].quote.latestPrice
+        }
+        console.log(data)
+        res.json(data);
       })
   })
 }
