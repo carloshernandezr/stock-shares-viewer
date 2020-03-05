@@ -50,6 +50,19 @@ $(document).ready(function () {
     $.post('/api/watchlist', listData).then(getWatchlists)
   }
 
+  //button fo add group
+
+  $('#addListBtn').on('click', function (event) {
+    event.preventDefault()
+    console.log("new function")
+    const newStock = $('#newStock').val()
+    addNewStock({ ticker: newStock })
+  })
+
+  function addNewStock (listData) {
+    console.log(listData)
+    $.post('/api/watchlistg', listData).then(getWatchlists)
+  }
   $('#tickerBtn').on('click', function (event) {
     var ticker = $('#tickerInput').val()
 
@@ -73,14 +86,16 @@ $(document).ready(function () {
     </div>
     <div class="message-body">
     <ul>
-    <li>${data.symbol}</li>
+    <li id="newStock">${data.symbol}</li>
     <li>${data.exchange}</li>
     <li>${data.currentPrice}</li>
     <li>CANVAS CHART GOES HERE</li>
     </ul>
-    <a class="button is-info" id="newListBtn">
+    <div class="control">
+    <a class="button is-info" id="addListBtn">
                     Add to watchlist
                 </a>
+                </div>
     </div>
   </article>`)
     $('#watchlistContent').append(newMessage)
