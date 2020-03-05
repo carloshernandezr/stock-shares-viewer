@@ -50,6 +50,6 @@ module.exports = function (app) {
     console.log(req.body)
     db.Group.create(req.body).then(function (dbWatchlist) {
       res.json(dbWatchlist)
-    });
+    })
   })
 }
