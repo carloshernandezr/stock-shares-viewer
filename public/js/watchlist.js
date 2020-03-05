@@ -27,7 +27,7 @@ $(document).ready(function () {
 
   function createNewRow (arr) {
     console.log('createnewrow fx: ', watchlists)
-    for (i = 0; i < arr.length; i++) {
+    for (let i = 0; i < arr.length; i++) {
       console.log(arr[i])
       const newInputRow = $(
         ['<li>', '<span>' + '<a>' + arr[i] + '</a>' + '</span>', '</li>'].join(
