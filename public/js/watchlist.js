@@ -66,16 +66,19 @@ $(document).ready(function () {
   function createMessage (data) {
     const newMessage = $(`<article class="message">
     <div class="message-header">
-      <p>${data.company}</p>
+      ${data.company}
       <button class="delete" aria-label="delete"></button>
     </div>
     <div class="message-body">
     <ul>
-    <li>CANVAS CHART GOES HERE</li>
     <li>${data.symbol}</li>
     <li>${data.exchange}</li>
     <li>${data.currentPrice}</li>
+    <li>CANVAS CHART GOES HERE</li>
     </ul>
+    <a class="button is-info" id="newListBtn">
+                    Add to watchlist
+                </a>
     </div>
   </article>`)
     $('#watchlistContent').append(newMessage)
