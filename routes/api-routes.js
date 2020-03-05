@@ -36,11 +36,20 @@ module.exports = function (app) {
     const queryUrl = `https://sandbox.iexapis.com/stable/stock/market/batch?symbols=${ticker}&types=quote&token=${sandboxApiKey}`
     axios.get(queryUrl)
       .then(function (result) {
+        console.log(result.data)
         const data = {
           company: result.data[ticker].quote.companyName,
           symbol: result.data[ticker].quote.symbol,
           exchange: result.data[ticker].quote.primaryExchange,
-          currentPrice: result.data[ticker].quote.latestPrice
+          currentPrice: result.data[ticker].quote.latestPrice,
+          open: result.data[ticker].quote.open,
+          high: result.data[ticker].quote.close,
+          low: result.data[ticker].quote.low,
+          low52: result.data[ticker].quote.week52Low,
+          high52: result.data[ticker].quote.week52High,
+          marketCap: result.data[ticker].quote.marketCap,
+          ytdChange: result.data[ticker].quote.ytdChange,
+          isUSMarketOpen: result.data[ticker].quote.isUSMarketOpen
         }
         console.log(data)
         res.json(data)
