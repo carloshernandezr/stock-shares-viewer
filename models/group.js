@@ -6,7 +6,13 @@ module.exports = function (sequelize, DataTypes) {
       validate: {
         len: [1, 50]
       }
+    },
+    isWatchlist: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: 1
     }
+
   })
 
   // ADD ASSOCIATIONS HERE
