@@ -47,7 +47,7 @@ $(document).ready(function () {
   // function insertNewGroup (listData) {
   //   $.post('/api/watchlist', listData).then(getWatchlists);
   // }
-  
+
   $('#tickerBtn').on('click', function (event) {
     var ticker = $('#tickerInput').val()
 
@@ -79,4 +79,5 @@ $(document).ready(function () {
     </div>
   </article>`)
     $('#watchlistContent').append(newMessage)
+  }
 })
