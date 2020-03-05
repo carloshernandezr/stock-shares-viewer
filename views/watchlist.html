@@ -90,15 +90,20 @@
                     </a>
                 </div>
             </div>
-            <div>
-                <a class="button is-info">
-                    Add new watchlist
+            <div class="field has-addons">
+                <div class="control">
+                    <input class="input" id="listInput" type="text" placeholder="Enter New Watchlist">
+                </div>
+                <div class="control">
+                <a class="button is-info" id="newListBtn">
+                    Add watchlist
                 </a>
+                </div>
             </div>
             <p class="menu-label">
                 Watchlists
             </p>
-            <ul class="menu-list">
+            <ul class="menu-list" id="watchAside">
                 <a>Automotive</a>
                 <a>Technology</a>
                 <a>Biotechnology</a>
