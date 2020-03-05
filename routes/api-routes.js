@@ -7,6 +7,9 @@
 const db = require('../models')
 const axios = require('axios')
 
+//Variables
+const sandboxApiKey = 'Tpk_34cea288c0494864ae04a08d5ad02dc2';
+
 // Routes
 // =============================================================
 module.exports = function (app) {
@@ -30,8 +33,7 @@ module.exports = function (app) {
   })
   app.get('/api/watchlist/search/:ticker', function (req, res) {
     const ticker = (req.params.ticker)
-    const queryUrl = 'https://sandbox.iexapis.com/stable/stock/market/batch?symbols=aapl&types=quote&token=Tpk_34cea288c0494864ae04a08d5ad02dc2'
-    console.log('ticker: ', ticker)
+    const queryUrl = `https://sandbox.iexapis.com/stable/stock/market/batch?symbols=${ticker}&types=quote&token=${sandboxApiKey}`;
     axios.get(queryUrl)
       .then(function (result) {
         console.log('API result: ', result.data)
