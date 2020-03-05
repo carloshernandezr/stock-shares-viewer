@@ -3,7 +3,6 @@ $(document).ready(function () {
   const newListInput = $('#listInput')
   console.log(newListInput.val())
 
-  // $('#newListBtn').on('click', newGroupBtn(event))
   let watchlists = []
   getWatchlists()
 
@@ -17,8 +16,10 @@ $(document).ready(function () {
     $.get('/api/watchlist', function (data) {
       const array = []
       data.forEach(element => {
-        watchlists = element.groupName
-        array.push(watchlists)
+        if (element.isWatchlist) {
+          watchlists = element.groupName
+          array.push(watchlists)
+        }
       })
       console.log(array)
       initializeRows(array)
@@ -38,15 +39,16 @@ $(document).ready(function () {
     }
   }
 
-  // function newGroupBtn (event) {
-  //   event.preventDefault();
-  //   insertNewGroup({
-  //     groupName: newListInput.val().trim()
-  //   })
-  // }
-  // function insertNewGroup (listData) {
-  //   $.post('/api/watchlist', listData).then(getWatchlists);
-  // }
+  $('#newListBtn').on('click', function (event) {
+    event.preventDefault()
+    const newGroup = $('#listInput').val()
+    insertNewGroup({ groupName: newGroup })
+  })
+
+  function insertNewGroup (listData) {
+    console.log(listData)
+    $.post('/api/watchlist', listData).then(getWatchlists)
+  }
 
   $('#tickerBtn').on('click', function (event) {
     var ticker = $('#tickerInput').val()
