@@ -46,4 +46,10 @@ module.exports = function (app) {
         res.json(data)
       })
   })
+  app.post('/api/watchlist', function (req, res) {
+    console.log(req.body)
+    // db.Watchlist.create(req.body).then(function (dbWatchlist) {
+    //   res.json(dbWatchlist)
+    // });
+  })
 }
