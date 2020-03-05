@@ -17,8 +17,10 @@ $(document).ready(function () {
     $.get('/api/watchlist', function (data) {
       const array = []
       data.forEach(element => {
-        watchlists = element.groupName
-        array.push(watchlists)
+        if (element.isWatchlist) {
+          watchlists = element.groupName
+          array.push(watchlists)
+        }
       })
       console.log(array)
       initializeRows(array)
