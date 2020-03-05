@@ -74,14 +74,14 @@ $(document).ready(function () {
     <div class="message-body">
     <ul>
     <li>${data.exchange} - ${data.symbol}</li>
-    <li>Price: ${data.currentPrice} USD</li>
-    <li>Open: ${data.open} </li>
-    <li>High: ${data.high} </li>
-    <li>Low: ${data.low} </li>
-    <li>52-wk High: ${data.high52} </li>
-    <li>52-wk Low: ${data.low52} </li>
-    <li>Market Cap: ${data.marketCap} </li>
-    <li>YTD%: ${data.ytdChange} </li>
+    <li><span id="priceEmphasis">${data.currentPrice}</span> USD</li>
+    <li>Open: ${data.open}</li>
+    <li>High: ${data.high}</li>
+    <li>Low: ${data.low}</li>
+    <li>52-wk High: ${data.high52}</li>
+    <li>52-wk Low: ${data.low52}</li>
+    <li>Market Cap: ${data.marketCap}</li>
+    <li>YTD: ${data.ytdChange}%</li>
     </ul>
     CANVAS CHART GOES HERE
 
