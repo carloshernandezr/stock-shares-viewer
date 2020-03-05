@@ -1,17 +1,50 @@
-$(function () {
-  $('#tickerBtn').on('click', function (event) {
-    var ticker = $('#tickerInput').val()
-    console.log('jquery FE: ', ticker)
+$(document).ready(function () {
+  const watchAside = $('#watchAside')
+  const newListInput = $('#listInput')
+  console.log(newListInput.val())
 
-    // Send the PUT request.
-    $.ajax('/api/watchlist/search/' + ticker, {
-      type: 'GET'
-    }).then(
-      function () {
-        console.log('ticker FE:', ticker)
-        // Reload the page to get the updated list
-        // location.reload();
-      }
-    )
-  })
+  // $('#newListBtn').on('click', newGroupBtn(event))
+  let watchlists = []
+  getWatchlists()
+
+  function initializeRows (arr) {
+    watchAside.empty()
+    const rowsToAdd = []
+    rowsToAdd.push(createNewRow(arr))
+  }
+
+  function getWatchlists () {
+    $.get('/api/watchlist', function (data) {
+      const array = []
+      data.forEach(element => {
+        watchlists = element.groupName
+        array.push(watchlists)
+      })
+      console.log(array)
+      initializeRows(array)
+    })
+  }
+
+  function createNewRow (arr) {
+    console.log('createnewrow fx: ', watchlists)
+    for (let i = 0; i < arr.length; i++) {
+      console.log(arr[i])
+      const newInputRow = $(
+        ['<li>', '<span>' + '<a>' + arr[i] + '</a>' + '</span>', '</li>'].join(
+          ''
+        )
+      )
+      watchAside.append(newInputRow)
+    }
+  }
+
+  // function newGroupBtn (event) {
+  //   event.preventDefault();
+  //   insertNewGroup({
+  //     groupName: newListInput.val().trim()
+  //   })
+  // }
+  // function insertNewGroup (listData) {
+  //   $.post('/api/watchlist', listData).then(getWatchlists);
+  // }
 })

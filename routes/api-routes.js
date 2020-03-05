@@ -30,11 +30,17 @@ module.exports = function (app) {
   })
   app.get('/api/watchlist/search/:ticker', function (req, res) {
     const ticker = (req.params.ticker)
-    const queryUrl = 'https://sandbox.iexapis.com/stable/stock/market/batch?symbols=aapl&types=quote&token=Tpk_34cea288c0494864ae04a08d5ad02dc2'
-    console.log('ticker: ', ticker)
+    const queryUrl = 'https://sandbox.iexapis.com/stable/stock/market/batch?symbols=' + ticker + '&types=quote&token=Tpk_34cea288c0494864ae04a08d5ad02dc2'
+    // console.log('ticker: ', ticker)
     axios.get(queryUrl)
       .then(function (result) {
         console.log('API result: ', result.data)
       })
+  })
+  app.post('/api/watchlist', function (req, res) {
+    console.log(req.body)
+    // db.Watchlist.create(req.body).then(function (dbWatchlist) {
+    //   res.json(dbWatchlist)
+    // });
   })
 }
