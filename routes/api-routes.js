@@ -32,7 +32,7 @@ module.exports = function (app) {
     })
   })
   app.get('/api/watchlist/search/:ticker', function (req, res) {
-    const ticker = (req.params.ticker).toUpperCase();
+    const ticker = (req.params.ticker).toUpperCase()
     const queryUrl = `https://sandbox.iexapis.com/stable/stock/market/batch?symbols=${ticker}&types=quote&token=${sandboxApiKey}`
     axios.get(queryUrl)
       .then(function (result) {
@@ -43,7 +43,7 @@ module.exports = function (app) {
           currentPrice: result.data[ticker].quote.latestPrice
         }
         console.log(data)
-        res.json(data);
+        res.json(data)
       })
   })
 }
