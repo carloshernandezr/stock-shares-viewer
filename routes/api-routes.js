@@ -48,8 +48,8 @@ module.exports = function (app) {
   })
   app.post('/api/watchlist', function (req, res) {
     console.log(req.body)
-    // db.Watchlist.create(req.body).then(function (dbWatchlist) {
-    //   res.json(dbWatchlist)
-    // });
+    db.Group.create(req.body).then(function (dbWatchlist) {
+      res.json(dbWatchlist)
+    });
   })
 }
