@@ -71,14 +71,21 @@ $(document).ready(function () {
     </div>
     <div class="message-body">
     <ul>
-    <li>${data.symbol}</li>
-    <li>${data.exchange}</li>
-    <li>${data.currentPrice}</li>
-    <li>CANVAS CHART GOES HERE</li>
+    <li>${data.exchange} - ${data.symbol}</li>
+    <li>Price: ${data.currentPrice} USD</li>
+    <li>Open: ${data.open} </li>
+    <li>High: ${data.high} </li>
+    <li>Low: ${data.low} </li>
+    <li>52-wk High: ${data.high52} </li>
+    <li>52-wk Low: ${data.low52} </li>
+    <li>Market Cap: ${data.marketCap} </li>
+    <li>YTD%: ${data.ytdChange} </li>
     </ul>
-    <a class="button is-info" id="newListBtn">
+    CANVAS CHART GOES HERE
+
+    <p><a class="button is-info" id="newListBtn">
                     Add to watchlist
-                </a>
+                </a></p>
     </div>
   </article>`)
     $('#watchlistContent').append(newMessage)
