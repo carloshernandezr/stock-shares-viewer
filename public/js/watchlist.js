@@ -41,6 +41,7 @@ $(document).ready(function () {
 
   $('#newListBtn').on('click', function (event) {
     event.preventDefault()
+    console.log("new function")
     const newGroup = $('#listInput').val()
     insertNewGroup({ groupName: newGroup })
   })
@@ -49,21 +50,8 @@ $(document).ready(function () {
     console.log(listData)
     $.post('/api/watchlist', listData).then(getWatchlists)
   }
-
-  //button fo add group
-
-  $('#addListBtn').on('click', function (event) {
-    event.preventDefault()
-    console.log("new function")
-    const newStock = $('#newStock').val()
-    addNewStock({ ticker: newStock })
-  })
-
-  function addNewStock (listData) {
-    console.log(listData)
-    $.post('/api/watchlistg', listData).then(getWatchlists)
-  }
   $('#tickerBtn').on('click', function (event) {
+    console.log("test final")
     var ticker = $('#tickerInput').val()
 
     // Send the PUT request.
@@ -86,7 +74,7 @@ $(document).ready(function () {
     </div>
     <div class="message-body">
     <ul>
-    <li id="newStock">${data.symbol}</li>
+    <li >${data.symbol}</li>
     <li>${data.exchange}</li>
     <li>${data.currentPrice}</li>
     <li>CANVAS CHART GOES HERE</li>

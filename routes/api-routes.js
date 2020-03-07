@@ -52,10 +52,3 @@ module.exports = function (app) {
       res.json(dbWatchlist)
     })
   })
-  app.post('/api/watchlistg', function (req, res) {
-    console.log(req.body)
-    db.Watchlist.create(req.body).then(function (dbGrouplist) {
-      res.json(dbGrouplist)
-    })
-  })
-}
