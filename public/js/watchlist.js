@@ -74,7 +74,6 @@ $(document).ready(function () {
     const newMessage = $(`<article class="message">
     <div class="message-header">
       ${data.company}
-      <button class="delete" aria-label="delete"></button>
     </div>
     <div class="message-body">
     <ul>
@@ -95,6 +94,7 @@ $(document).ready(function () {
                 </a></p>
     </div>
   </article>`)
+    $('#watchlistContent').empty()
     $('#watchlistContent').append(newMessage)
   }
 })
