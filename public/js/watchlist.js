@@ -72,9 +72,14 @@ $(document).ready(function () {
       )
     }
   })
-  //Handles displaying data when watchlist is clicked
-  watchAside.on('click', 'li', function(event) {
-    console.log(this.dataset.ticker)
+  // Handles displaying data when watchlist is clicked
+  watchAside.on('click', 'li', function (event) {
+    const clickedWatchlist = this.dataset.ticker
+    $.ajax('/api/watchlist/' + clickedWatchlist, function (data) {
+      console.log(data)
+    }).then(function (response) {
+      console.log(response)
+    })
   })
   function createMessage (data) {
     const newMessage = $(`<article class="message">

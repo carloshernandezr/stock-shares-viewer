@@ -21,15 +21,24 @@ module.exports = function (app) {
       return res.json(result)
     })
   })
-  app.get('/api/watchlist/:groupId', function (req, res) {
-    const id = (req.params.groupId)
-    db.Watchlist.findAll({
+  app.get('/api/watchlist/:clickedWatchlist', function (req, res) {
+    const clickedWatchlist = (req.params.clickedWatchlist)
+    console.log(clickedWatchlist)
+    db.Group.findAll({
+      include: db.Watchlist,
       where: {
-        groupId: id
+        groupName: clickedWatchlist
       }
     }).then(function (result) {
       return res.json(result)
     })
+    // db.Watchlist.findAll({
+    //   where: {
+    //     groupId: id
+    //   }
+    // }).then(function (result) {
+    //   return res.json(result)
+    // })
   })
   app.get('/api/watchlist/search/:ticker', function (req, res) {
     const ticker = (req.params.ticker).toUpperCase()
