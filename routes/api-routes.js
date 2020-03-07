@@ -34,6 +34,28 @@ module.exports = function (app) {
       result[0].Watchlists.map(obj => array.push(obj.ticker))
       const combinedTickers = array.join()
       console.log(combinedTickers)
+      const queryUrl = `https://sandbox.iexapis.com/stable/stock/market/batch?symbols=${combinedTickers}&types=quote&token=${sandboxApiKey}`
+      axios.get(queryUrl)
+        .then(function (result) {
+          console.log(result.data)
+          // const percentYtd = (result.data[ticker].quote.ytdChange * 100).toFixed(1)
+          // const data = {
+          //   company: result.data[ticker].quote.companyName,
+          //   symbol: result.data[ticker].quote.symbol,
+          //   exchange: result.data[ticker].quote.primaryExchange,
+          //   currentPrice: result.data[ticker].quote.latestPrice,
+          //   open: result.data[ticker].quote.open,
+          //   high: result.data[ticker].quote.close,
+          //   low: result.data[ticker].quote.low,
+          //   low52: result.data[ticker].quote.week52Low,
+          //   high52: result.data[ticker].quote.week52High,
+          //   marketCap: result.data[ticker].quote.marketCap,
+          //   ytdChange: percentYtd,
+          //   isUSMarketOpen: result.data[ticker].quote.isUSMarketOpen
+          // }
+          // console.log(data)
+          // res.json(data)
+        })
     })
   })
   app.get('/api/watchlist/search/:ticker', function (req, res) {
