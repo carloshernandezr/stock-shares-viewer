@@ -30,15 +30,11 @@ module.exports = function (app) {
         groupName: clickedWatchlist
       }
     }).then(function (result) {
-      return res.json(result)
+      const array = []
+      result[0].Watchlists.map(obj => array.push(obj.ticker))
+      const combinedTickers = array.join()
+      console.log(combinedTickers)
     })
-    // db.Watchlist.findAll({
-    //   where: {
-    //     groupId: id
-    //   }
-    // }).then(function (result) {
-    //   return res.json(result)
-    // })
   })
   app.get('/api/watchlist/search/:ticker', function (req, res) {
     const ticker = (req.params.ticker).toUpperCase()

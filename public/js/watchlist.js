@@ -78,7 +78,7 @@ $(document).ready(function () {
     $.ajax('/api/watchlist/' + clickedWatchlist, function (data) {
       console.log(data)
     }).then(function (response) {
-      console.log(response)
+      //CREATE HTML HERE
     })
   })
   function createMessage (data) {
