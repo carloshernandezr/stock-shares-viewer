@@ -58,13 +58,10 @@ module.exports = function (app) {
       const dataPoints = []
 
       for (let i = 0; i < chartStuff.length; i++) {
-       
         const chartData = {
-          x: new Date
-            (parseInt(chartStuff[i].date.split('-')[0]),
+          x: new Date(parseInt(chartStuff[i].date.split('-')[0]),
             parseInt(chartStuff[i].date.split('-')[1]),
-            parseInt(chartStuff[i].date.split('-')[2]))
-           ,
+            parseInt(chartStuff[i].date.split('-')[2])),
 
           y: [
             parseFloat(chartStuff[i].open),

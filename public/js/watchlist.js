@@ -95,10 +95,10 @@ $(document).ready(function () {
     // console.log(data[1])
     data[1].forEach(el => {
       console.log(el.x)
-      el.x = new Date(el.x);
-    });
+      el.x = new Date(el.x)
+    })
     for (let i = 0; i < data[1].length; i++) {
-      // console.log(data[1][i]);
+      // eslint-disable-next-line no-undef
       var chart = new CanvasJS.Chart('chartContainer', {
         animationEnabled: true,
         theme: 'light2', // "light1", "light2", "dark1", "dark2"
@@ -125,7 +125,7 @@ $(document).ready(function () {
             type: 'candlestick',
             yValueFormatString: '$##0.00',
             dataPoints: data[1],
-            xValueType: "dateTime"
+            xValueType: 'dateTime'
           }
         ]
       })
