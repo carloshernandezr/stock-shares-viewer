@@ -38,31 +38,39 @@ module.exports = function (app) {
       const stockData = result.data[ticker].quote
       const chartStuff = result.data[ticker].chart
       // console.log(result.data[ticker].chart);
-      const data = [{
-        company: stockData.companyName,
-        symbol: stockData.symbol,
-        exchange: stockData.primaryExchange,
-        currentPrice: stockData.latestPrice,
-        open: stockData.open,
-        high: stockData.close,
-        low: stockData.low,
-        low52: stockData.week52Low,
-        high52: stockData.week52High,
-        marketCap: stockData.marketCap,
-        ytdChange: stockData.ytdChange,
-        isUSMarketOpen: stockData.isUSMarketOpen
-      }]
+      const data = [
+        {
+          company: stockData.companyName,
+          symbol: stockData.symbol,
+          exchange: stockData.primaryExchange,
+          currentPrice: stockData.latestPrice,
+          open: stockData.open,
+          high: stockData.close,
+          low: stockData.low,
+          low52: stockData.week52Low,
+          high52: stockData.week52High,
+          marketCap: stockData.marketCap,
+          ytdChange: stockData.ytdChange,
+          isUSMarketOpen: stockData.isUSMarketOpen
+        }
+      ]
 
       const dataPoints = []
+
       for (let i = 0; i < chartStuff.length; i++) {
+       
         const chartData = {
-          x: chartStuff[i].date,
+          x: new Date
+            (parseInt(chartStuff[i].date.split('-')[0]),
+            parseInt(chartStuff[i].date.split('-')[1]),
+            parseInt(chartStuff[i].date.split('-')[2]))
+           ,
 
           y: [
-            chartStuff[i].open,
-            chartStuff[i].high,
-            chartStuff[i].low,
-            chartStuff[i].close
+            parseFloat(chartStuff[i].open),
+            parseFloat(chartStuff[i].high),
+            parseFloat(chartStuff[i].low),
+            parseFloat(chartStuff[i].close)
           ]
         }
 
@@ -70,6 +78,7 @@ module.exports = function (app) {
       }
       data.push(dataPoints)
       res.json(data)
+
       // res.json(dataPoints)
     })
   })
