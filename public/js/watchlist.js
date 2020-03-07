@@ -52,18 +52,23 @@ $(document).ready(function () {
 
   $('#tickerBtn').on('click', function (event) {
     var ticker = $('#tickerInput').val()
-
-    // Send the PUT request.
-    $.ajax('/api/watchlist/search/' + ticker, {
-      type: 'GET'
-    }).then(
-      function (response) {
-        console.log('API response', response)
-        createMessage(response)
-        // Reload the page to get the updated list
-        // location.reload();
-      }
-    )
+    const isRegexTrue = /^[a-zA-Z]+$/.test(ticker)
+    console.log('isRegexTrue: ', isRegexTrue)
+    if (!isRegexTrue) {
+      console.log('Invalid search input')
+    } else {
+      // Send the PUT request.
+      $.ajax('/api/watchlist/search/' + ticker, {
+        type: 'GET'
+      }).then(
+        function (response) {
+          console.log('API response', response)
+          createMessage(response)
+          // Reload the page to get the updated list
+          // location.reload();
+        }
+      )
+    }
   })
   function createMessage (data) {
     const newMessage = $(`<article class="message">
