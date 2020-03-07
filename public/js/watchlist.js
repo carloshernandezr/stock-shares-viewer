@@ -72,6 +72,10 @@ $(document).ready(function () {
       )
     }
   })
+  //Handles displaying data when watchlist is clicked
+  watchAside.on('click', 'li', function(event) {
+    console.log(this.dataset.ticker)
+  })
   function createMessage (data) {
     const newMessage = $(`<article class="message">
     <div class="message-header">
