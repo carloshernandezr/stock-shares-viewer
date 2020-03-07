@@ -53,20 +53,30 @@ $(document).ready(function () {
   $('#tickerBtn').on('click', function (event) {
     var ticker = $('#tickerInput').val()
 
-    // Send the PUT request.
-    $.ajax('/api/watchlist/search/' + ticker, {
-      type: 'GET'
-    }).then(function (response) {
-      console.log('API response', response)
-      createMessage(response)
-      createChart(response)
-      // Reload the page to get the updated list
-      // location.reload();
-    })
+    const isRegexTrue = /^[a-zA-Z]+$/.test(ticker)
+    console.log('isRegexTrue: ', isRegexTrue)
+    if (!isRegexTrue) {
+      console.log('Invalid search input')
+    } else {
+      // Send the PUT request.
+      $.ajax('/api/watchlist/search/' + ticker, {
+        type: 'GET'
+      }).then(
+        function (response) {
+          console.log('API response', response)
+          createMessage(response)
+          createChart(response)
+          // Reload the page to get the updated list
+          // location.reload();
+        }
+      )
+    }
+
   })
   function createMessage (data) {
     const newMessage = $(`<article class="message">
     <div class="message-header">
+
       ${data[0].company}
       <button class="delete" aria-label="delete"></button>
     </div>
@@ -81,6 +91,7 @@ $(document).ready(function () {
     <li>52-wk Low: ${data[0].low52} </li>
     <li>Market Cap: ${data[0].marketCap} </li>
     <li>YTD%: ${data[0].ytdChange} </li>
+
     </ul>
     <div id="chartContainer" style="height: 370px; width: 100%;"></div>
 
@@ -89,6 +100,7 @@ $(document).ready(function () {
                 </a></p>
     </div>
   </article>`)
+    $('#watchlistContent').empty()
     $('#watchlistContent').append(newMessage)
   }
   function createChart (data) {

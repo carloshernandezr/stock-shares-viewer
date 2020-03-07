@@ -32,6 +32,7 @@ module.exports = function (app) {
     })
   })
   app.get('/api/watchlist/search/:ticker', function (req, res) {
+
     const ticker = req.params.ticker.toUpperCase()
     const queryUrl = `https://sandbox.iexapis.com/stable/stock/market/batch?symbols=${ticker}&types=quote,chart&token=${sandboxApiKey}`
     axios.get(queryUrl).then(function (result) {
