@@ -52,36 +52,40 @@ $(document).ready(function () {
 
   $('#tickerBtn').on('click', function (event) {
     var ticker = $('#tickerInput').val()
-
-    // Send the PUT request.
-    $.ajax('/api/watchlist/search/' + ticker, {
-      type: 'GET'
-    }).then(
-      function (response) {
-        console.log('API response', response)
-        createMessage(response)
-        // Reload the page to get the updated list
-        // location.reload();
-      }
-    )
+    const isRegexTrue = /^[a-zA-Z]+$/.test(ticker)
+    console.log('isRegexTrue: ', isRegexTrue)
+    if (!isRegexTrue) {
+      console.log('Invalid search input')
+    } else {
+      // Send the PUT request.
+      $.ajax('/api/watchlist/search/' + ticker, {
+        type: 'GET'
+      }).then(
+        function (response) {
+          console.log('API response', response)
+          createMessage(response)
+          // Reload the page to get the updated list
+          // location.reload();
+        }
+      )
+    }
   })
   function createMessage (data) {
     const newMessage = $(`<article class="message">
     <div class="message-header">
       ${data.company}
-      <button class="delete" aria-label="delete"></button>
     </div>
     <div class="message-body">
     <ul>
     <li>${data.exchange} - ${data.symbol}</li>
-    <li>Price: ${data.currentPrice} USD</li>
-    <li>Open: ${data.open} </li>
-    <li>High: ${data.high} </li>
-    <li>Low: ${data.low} </li>
-    <li>52-wk High: ${data.high52} </li>
-    <li>52-wk Low: ${data.low52} </li>
-    <li>Market Cap: ${data.marketCap} </li>
-    <li>YTD%: ${data.ytdChange} </li>
+    <li><span id="priceEmphasis">${data.currentPrice}</span> USD</li>
+    <li>Open: ${data.open}</li>
+    <li>High: ${data.high}</li>
+    <li>Low: ${data.low}</li>
+    <li>52-wk High: ${data.high52}</li>
+    <li>52-wk Low: ${data.low52}</li>
+    <li>Market Cap: ${data.marketCap}</li>
+    <li>YTD: ${data.ytdChange}%</li>
     </ul>
     CANVAS CHART GOES HERE
 
@@ -90,6 +94,7 @@ $(document).ready(function () {
                 </a></p>
     </div>
   </article>`)
+    $('#watchlistContent').empty()
     $('#watchlistContent').append(newMessage)
   }
 })

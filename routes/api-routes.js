@@ -36,7 +36,8 @@ module.exports = function (app) {
     const queryUrl = `https://sandbox.iexapis.com/stable/stock/market/batch?symbols=${ticker}&types=quote&token=${sandboxApiKey}`
     axios.get(queryUrl)
       .then(function (result) {
-        console.log(result.data)
+        // console.log(result.data)
+        const percentYtd = (result.data[ticker].quote.ytdChange * 100).toFixed(1)
         const data = {
           company: result.data[ticker].quote.companyName,
           symbol: result.data[ticker].quote.symbol,
@@ -48,7 +49,7 @@ module.exports = function (app) {
           low52: result.data[ticker].quote.week52Low,
           high52: result.data[ticker].quote.week52High,
           marketCap: result.data[ticker].quote.marketCap,
-          ytdChange: result.data[ticker].quote.ytdChange,
+          ytdChange: percentYtd,
           isUSMarketOpen: result.data[ticker].quote.isUSMarketOpen
         }
         console.log(data)
