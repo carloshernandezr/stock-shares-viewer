@@ -12,7 +12,7 @@ $(document).ready(function () {
     rowsToAdd.push(createNewRow(arr))
   }
 
-  function getWatchlists () {
+  function getWatchlists () {//para hacer la lista gropup
     $.get('/api/watchlist', function (data) {
       const array = []
       data.forEach(element => {
@@ -38,10 +38,8 @@ $(document).ready(function () {
       watchAside.append(newInputRow)
     }
   }
-
-  $('#newListBtn').on('click', function (event) {
-    event.preventDefault()
-    console.log('new function')
+  $('#newListBtn').on('click', function (event) { 
+    event.preventDefault() 
     const newGroup = $('#listInput').val()
     insertNewGroup({ groupName: newGroup })
   })
@@ -50,6 +48,19 @@ $(document).ready(function () {
     console.log(listData)
     $.post('/api/watchlist', listData).then(getWatchlists)
   }
+
+  //** newbutton2*/  
+  $('body').on('click',"#newListBtn2",function (event) {
+    event.preventDefault()
+    console.log(watchlists)
+    $("#footerBox").toggle()
+  })
+
+  // function insertNewGroup (listData) {
+  //   console.log(listData)
+  //   $.post('/api/watchlist', listData).then(getWatchlists)
+  // }
+  //** newbutton2*/
   $('#tickerBtn').on('click', function (event) {
     console.log('test final')
     var ticker = $('#tickerInput').val()
@@ -71,6 +82,8 @@ $(document).ready(function () {
       )
     }
   })
+ 
+  
   function createMessage (data) {
     const newMessage = $(`<article class="message">
     <div class="message-header">
@@ -90,9 +103,28 @@ $(document).ready(function () {
     </ul>
     CANVAS CHART GOES HERE
 
-    <p><a class="button is-info" id="newListBtn">
-                    Add to watchlist
+    <p><a class="button is-info" id="newListBtn2">
+                    Add to watchlistanother here
                 </a></p>
+    </div>
+
+    <div class="footer" id="footerBox">
+    <div class="field">
+    <p class="control has-icons-left">
+      <span class="select">
+        <select>
+          <option selected>Country</option>
+          <option>Select dropdown</option>
+          <option>With options</option>
+        </select>
+      </span>
+      <span class="icon is-small is-left">
+        <i class="fas fa-globe"></i>
+      </span>
+    </p>
+  </div>
+
+    his a footer
     </div>
   </article>`)
     $('#watchlistContent').empty()
