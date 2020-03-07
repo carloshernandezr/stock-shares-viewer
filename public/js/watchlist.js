@@ -30,10 +30,12 @@ $(document).ready(function () {
     console.log('createnewrow fx: ', watchlists)
     for (let i = 0; i < arr.length; i++) {
       console.log(arr[i])
-      const newInputRow = $(
-        ['<li>', '<span>' + '<a>' + arr[i] + '</a>' + '</span>', '</li>'].join(
-          ''
-        )
+      const newInputRow = $(`
+        <li data-ticker="${arr[i]}">
+          <a>
+            ${arr[i]}
+          </a>
+        </li>`
       )
       watchAside.append(newInputRow)
     }
