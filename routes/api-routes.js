@@ -38,6 +38,8 @@ module.exports = function (app) {
       axios.get(queryUrl)
         .then(function (result) {
           console.log(result.data)
+          //NEED TO MAKE THE BELOW CODE DYNAMIC TO ALL THE TICKERS RETURN FROM API
+          console.log(result.data['TSLA'].quote)
           // const percentYtd = (result.data[ticker].quote.ytdChange * 100).toFixed(1)
           // const data = {
           //   company: result.data[ticker].quote.companyName,
