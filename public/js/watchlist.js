@@ -60,6 +60,7 @@ $(document).ready(function () {
       function (response) {
         console.log('API response', response)
         createMessage(response)
+        createChart(response)
         // Reload the page to get the updated list
         // location.reload();
       }
@@ -68,20 +69,20 @@ $(document).ready(function () {
   function createMessage (data) {
     const newMessage = $(`<article class="message">
     <div class="message-header">
-      ${data.company}
+      ${data[0].company}
       <button class="delete" aria-label="delete"></button>
     </div>
     <div class="message-body">
     <ul>
-    <li>${data.exchange} - ${data.symbol}</li>
-    <li>Price: ${data.currentPrice} USD</li>
-    <li>Open: ${data.open} </li>
-    <li>High: ${data.high} </li>
-    <li>Low: ${data.low} </li>
-    <li>52-wk High: ${data.high52} </li>
-    <li>52-wk Low: ${data.low52} </li>
-    <li>Market Cap: ${data.marketCap} </li>
-    <li>YTD%: ${data.ytdChange} </li>
+    <li>${data[0].exchange} - ${data[0].symbol}</li>
+    <li>Price: ${data[0].currentPrice} USD</li>
+    <li>Open: ${data[0].open} </li>
+    <li>High: ${data[0].high} </li>
+    <li>Low: ${data[0].low} </li>
+    <li>52-wk High: ${data[0].high52} </li>
+    <li>52-wk Low: ${data[0].low52} </li>
+    <li>Market Cap: ${data[0].marketCap} </li>
+    <li>YTD%: ${data[0].ytdChange} </li>
     </ul>
     CANVAS CHART GOES HERE
 
@@ -92,4 +93,8 @@ $(document).ready(function () {
   </article>`)
     $('#watchlistContent').append(newMessage)
   }
+  function createChart (data) {
+    console.log(data[1])
+  }
+  
 })
