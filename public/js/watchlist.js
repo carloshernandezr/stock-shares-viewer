@@ -1,7 +1,5 @@
 $(document).ready(function () {
   const watchAside = $('#watchAside')
-  const newListInput = $('#listInput')
-  console.log(newListInput.val())
 
   let watchlists = []
   getWatchlists()
@@ -21,15 +19,12 @@ $(document).ready(function () {
           array.push(watchlists)
         }
       })
-      console.log(array)
       initializeRows(array)
     })
   }
 
   function createNewRow (arr) {
-    console.log('createnewrow fx: ', watchlists)
     for (let i = 0; i < arr.length; i++) {
-      console.log(arr[i])
       const newInputRow = $(`
         <li data-ticker="${arr[i]}">
           <a>
@@ -48,26 +43,20 @@ $(document).ready(function () {
   })
 
   function insertNewGroup (listData) {
-    console.log(listData)
     $.post('/api/watchlist', listData).then(getWatchlists)
   }
 
   $('#tickerBtn').on('click', function (event) {
     var ticker = $('#tickerInput').val()
     const isRegexTrue = /^[a-zA-Z]+$/.test(ticker)
-    console.log('isRegexTrue: ', isRegexTrue)
     if (!isRegexTrue) {
       console.log('Invalid search input')
     } else {
-      // Send the PUT request.
       $.ajax('/api/watchlist/search/' + ticker, {
         type: 'GET'
       }).then(
         function (response) {
-          console.log('API response', response)
           createMessage(response)
-          // Reload the page to get the updated list
-          // location.reload();
         }
       )
     }
@@ -76,14 +65,10 @@ $(document).ready(function () {
   watchAside.on('click', 'li', function (event) {
     const clickedWatchlist = this.dataset.ticker
     $.ajax('/api/watchlist/' + clickedWatchlist, function (data) {
-      // console.log(data)
     }).then(function (response) {
-      // CREATE HTML HERE
-      // console.log('response: ', response)
       $('#watchlistContent').empty()
-      const beginColumns = $(`<div class="columns is-multiline" id="watchlistColumns">`)
+      const beginColumns = $('<div class="columns is-multiline" id="watchlistColumns">')
       $('#watchlistContent').append(beginColumns)
-
       for (const key in response) {
         const ApiObj = response[key].quote
         const percentYtd = (ApiObj.ytdChange * 100).toFixed(1)
@@ -101,7 +86,6 @@ $(document).ready(function () {
           ytdChange: percentYtd,
           isUSMarketOpen: ApiObj.isUSMarketOpen
         }
-        console.log('data: ', data)
         createWatchlist(data)
       }
       const endColumns = $(`</div>

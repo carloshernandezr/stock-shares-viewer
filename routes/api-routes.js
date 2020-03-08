@@ -23,7 +23,6 @@ module.exports = function (app) {
   })
   app.get('/api/watchlist/:clickedWatchlist', function (req, res) {
     const clickedWatchlist = (req.params.clickedWatchlist)
-    console.log(clickedWatchlist)
     db.Group.findAll({
       include: db.Watchlist,
       where: {
@@ -33,7 +32,6 @@ module.exports = function (app) {
       const array = []
       result[0].Watchlists.map(obj => array.push(obj.ticker))
       const combinedTickers = array.join()
-      // console.log(combinedTickers)
       const queryUrl = `https://sandbox.iexapis.com/stable/stock/market/batch?symbols=${combinedTickers}&types=quote&token=${sandboxApiKey}`
       axios.get(queryUrl)
         .then(function (result) {
@@ -46,7 +44,6 @@ module.exports = function (app) {
     const queryUrl = `https://sandbox.iexapis.com/stable/stock/market/batch?symbols=${ticker}&types=quote&token=${sandboxApiKey}`
     axios.get(queryUrl)
       .then(function (result) {
-        // console.log(result.data)
         const percentYtd = (result.data[ticker].quote.ytdChange * 100).toFixed(1)
         const data = {
           company: result.data[ticker].quote.companyName,
@@ -62,12 +59,10 @@ module.exports = function (app) {
           ytdChange: percentYtd,
           isUSMarketOpen: result.data[ticker].quote.isUSMarketOpen
         }
-        console.log(data)
         res.json(data)
       })
   })
   app.post('/api/watchlist', function (req, res) {
-    console.log(req.body)
     db.Group.create(req.body).then(function (dbWatchlist) {
       res.json(dbWatchlist)
     })
