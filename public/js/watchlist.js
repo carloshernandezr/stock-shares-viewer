@@ -6,13 +6,13 @@ $(document).ready(function () {
   let watchlists = []
   getWatchlists()
 
-  function initializeRows (arr) {
+  function initializeRows(arr) {
     watchAside.empty()
     const rowsToAdd = []
     rowsToAdd.push(createNewRow(arr))
   }
 
-  function getWatchlists () {
+  function getWatchlists() {
     $.get('/api/watchlist', function (data) {
       const array = []
       data.forEach(element => {
@@ -26,7 +26,7 @@ $(document).ready(function () {
     })
   }
 
-  function createNewRow (arr) {
+  function createNewRow(arr) {
     console.log('createnewrow fx: ', watchlists)
     for (let i = 0; i < arr.length; i++) {
       console.log(arr[i])
@@ -47,7 +47,7 @@ $(document).ready(function () {
     insertNewGroup({ groupName: newGroup })
   })
 
-  function insertNewGroup (listData) {
+  function insertNewGroup(listData) {
     console.log(listData)
     $.post('/api/watchlist', listData).then(getWatchlists)
   }
@@ -76,12 +76,32 @@ $(document).ready(function () {
   watchAside.on('click', 'li', function (event) {
     const clickedWatchlist = this.dataset.ticker
     $.ajax('/api/watchlist/' + clickedWatchlist, function (data) {
-      console.log(data)
+      // console.log(data)
     }).then(function (response) {
-      //CREATE HTML HERE
+      // CREATE HTML HERE
+      // console.log('response: ', response)
+      for (const key in response) {
+        const ApiObj = response[key].quote
+        const percentYtd = (ApiObj.ytdChange * 100).toFixed(1)
+        const data = {
+          company: ApiObj.companyName,
+          symbol: ApiObj.symbol,
+          exchange: ApiObj.primaryExchange,
+          currentPrice: ApiObj.latestPrice,
+          open: ApiObj.open,
+          high: ApiObj.close,
+          low: ApiObj.low,
+          low52: ApiObj.week52Low,
+          high52: ApiObj.week52High,
+          marketCap: ApiObj.marketCap,
+          ytdChange: percentYtd,
+          isUSMarketOpen: ApiObj.isUSMarketOpen
+        }
+        console.log("data: ", data)
+      }
     })
   })
-  function createMessage (data) {
+  function createMessage(data) {
     const newMessage = $(`<article class="message">
     <div class="message-header">
       ${data.company}
