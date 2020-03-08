@@ -71,7 +71,6 @@ $(document).ready(function () {
         }
       )
     }
-
   })
   function createMessage (data) {
     const newMessage = $(`<article class="message">
@@ -121,7 +120,6 @@ $(document).ready(function () {
         axisX: {
           interval: 1,
           valueFormatString: 'MM DD YYYY'
-          // text: data[1][i].x
         },
         axisY: {
           includeZero: false,
@@ -144,33 +142,5 @@ $(document).ready(function () {
 
       chart.render()
     }
-
-    // $.get(
-    //   'https://canvasjs.com/data/gallery/javascript/netflix-stock-price.csv',
-    //   getDataPointsFromCSV
-    // )
-
-    // function getDataPointsFromCSV (csv) {
-    //   var csvLines = (points = [])
-    //   csvLines = csv.split(/[\r?\n|\r|\n]+/)
-    //   for (var i = 0; i < csvLines.length; i++) {
-    //     if (csvLines[i].length > 0) {
-    //       points = csvLines[i].split(',')
-    //       dataPoints.push({
-    //         x: new Date(
-    //           parseInt(points[0].split('-')[0]),
-    //           parseInt(points[0].split('-')[1]),
-    //           parseInt(points[0].split('-')[2])
-    //         ),
-    //         y: [
-    //           parseFloat(points[1]),
-    //           parseFloat(points[2]),
-    //           parseFloat(points[3]),
-    //           parseFloat(points[4])
-    //         ]
-    //       })
-    //     }
-    //   }
   }
 })
-// .x&&m.dataPoints[s].x.getTime||"dateTime"===m.xValueType)l=!0;for(s=0;s<m.dataPoints.length;s++){"undefined"===typeof m.dataPoints[s].x&&(m.dataPoints[s].x=s+(a.axisX.logarithmic?1:0));m.dataPoints[s].x.getTime?(l=!0,c=m.dataPoints[s].x.getTime()):c=m.dataPoints[s].x;if((e=m.dataPoints[s].y)&&e.length){g=Math.min.apply(null,e);k=Math.max.apply(null,e);B=!0;for(var p=0;p<e.length;p++)null===e.k&&(B=!1);B&&(q||(h=f),f=c)}c<b.min&&(b.min=c);c>b.max&&
