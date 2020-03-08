@@ -98,9 +98,7 @@ $(document).ready(function () {
   function createMessage (data) {
     const newMessage = $(`<article class="message">
     <div class="message-header">
-
       ${data[0].company}
-      <button class="delete" aria-label="delete"></button>
     </div>
     <div class="message-body">
     <ul>
@@ -173,7 +171,7 @@ function createWatchlist (data) {
   <article class="message">
   <div class="message-header">
     ${data.company}
-    <button class="delete" aria-label="delete"></button>
+    <button class="delete" aria-label="delete" data-attribute="${data.symbol}"></button>
   </div>
   <div class="message-body">
   <ul>
