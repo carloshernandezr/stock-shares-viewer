@@ -32,13 +32,11 @@ module.exports = function (app) {
     })
   })
   app.get('/api/watchlist/search/:ticker', function (req, res) {
-
     const ticker = req.params.ticker.toUpperCase()
     const queryUrl = `https://sandbox.iexapis.com/stable/stock/market/batch?symbols=${ticker}&types=quote,chart&token=${sandboxApiKey}`
     axios.get(queryUrl).then(function (result) {
       const stockData = result.data[ticker].quote
       const chartStuff = result.data[ticker].chart
-      // console.log(result.data[ticker].chart);
       const data = [
         {
           company: stockData.companyName,
@@ -76,8 +74,6 @@ module.exports = function (app) {
       }
       data.push(dataPoints)
       res.json(data)
-
-      // res.json(dataPoints)
     })
   })
 
