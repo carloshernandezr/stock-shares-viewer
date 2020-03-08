@@ -4,13 +4,13 @@ $(document).ready(function () {
   let watchlists = []
   getWatchlists()
 
-  function initializeRows (arr) {
+  function initializeRows(arr) {
     watchAside.empty()
     const rowsToAdd = []
     rowsToAdd.push(createNewRow(arr))
   }
 
-  function getWatchlists () {
+  function getWatchlists() {
     $.get('/api/watchlist', function (data) {
       const array = []
       data.forEach(element => {
@@ -23,7 +23,7 @@ $(document).ready(function () {
     })
   }
 
-  function createNewRow (arr) {
+  function createNewRow(arr) {
     for (let i = 0; i < arr.length; i++) {
       const newInputRow = $(`
         <li data-ticker="${arr[i]}">
@@ -42,7 +42,7 @@ $(document).ready(function () {
     insertNewGroup({ groupName: newGroup })
   })
 
-  function insertNewGroup (listData) {
+  function insertNewGroup(listData) {
     $.post('/api/watchlist', listData).then(getWatchlists)
   }
 
@@ -95,7 +95,7 @@ $(document).ready(function () {
       $('#watchlistContent').append(endColumns)
     })
   })
-  function createMessage (data) {
+  function createMessage(data) {
     const newMessage = $(`<article class="message">
     <div class="message-header">
       ${data[0].company}
@@ -123,7 +123,7 @@ $(document).ready(function () {
     $('#watchlistContent').empty()
     $('#watchlistContent').append(newMessage)
   }
-  function createChart (data) {
+  function createChart(data) {
     // console.log(data[1])
     data[1].forEach(el => {
       // console.log(el.x)
@@ -164,10 +164,9 @@ $(document).ready(function () {
       chart.render()
     }
   }
-})
 
-function createWatchlist (data) {
-  const columnsContent = $(`<div class="column is-half">
+  function createWatchlist(data) {
+    const columnsContent = $(`<div class="column is-half">
   <article class="message">
   <div class="message-header">
     ${data.company}
@@ -193,5 +192,6 @@ function createWatchlist (data) {
   </div>
 </article>
 </div>`)
-  $('#watchlistColumns').append(columnsContent)
-}
+    $('#watchlistColumns').append(columnsContent)
+  }
+})
