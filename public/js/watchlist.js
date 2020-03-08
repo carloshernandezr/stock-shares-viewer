@@ -170,7 +170,9 @@ $(document).ready(function () {
   <article class="message">
   <div class="message-header">
     ${data.company}
+    <span class="tag">Delete
     <button class="delete" aria-label="delete" data-attribute="${data.symbol}"></button>
+    </span>
   </div>
   <div class="message-body">
   <ul>
