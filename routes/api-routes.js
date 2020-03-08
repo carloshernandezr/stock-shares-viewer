@@ -21,14 +21,22 @@ module.exports = function (app) {
       return res.json(result)
     })
   })
-  app.get('/api/watchlist/:groupId', function (req, res) {
-    const id = req.params.groupId
-    db.Watchlist.findAll({
+  app.get('/api/watchlist/:clickedWatchlist', function (req, res) {
+    const clickedWatchlist = (req.params.clickedWatchlist)
+    db.Group.findAll({
+      include: db.Watchlist,
       where: {
-        groupId: id
+        groupName: clickedWatchlist
       }
     }).then(function (result) {
-      return res.json(result)
+      const array = []
+      result[0].Watchlists.map(obj => array.push(obj.ticker))
+      const combinedTickers = array.join()
+      const queryUrl = `https://sandbox.iexapis.com/stable/stock/market/batch?symbols=${combinedTickers}&types=quote&token=${sandboxApiKey}`
+      axios.get(queryUrl)
+        .then(function (result) {
+          res.json(result.data)
+        })
     })
   })
   app.get('/api/watchlist/search/:ticker', function (req, res) {
@@ -78,7 +86,6 @@ module.exports = function (app) {
   })
 
   app.post('/api/watchlist', function (req, res) {
-    console.log(req.body)
     db.Group.create(req.body).then(function (dbWatchlist) {
       res.json(dbWatchlist)
     })
