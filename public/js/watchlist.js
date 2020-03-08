@@ -128,7 +128,7 @@ $(document).ready(function () {
   function createChart (data) {
     // console.log(data[1])
     data[1].forEach(el => {
-      console.log(el.x)
+      // console.log(el.x)
       el.x = new Date(el.x)
     })
     for (let i = 0; i < data[1].length; i++) {
