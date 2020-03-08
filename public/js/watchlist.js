@@ -6,13 +6,13 @@ $(document).ready(function () {
   let watchlists = []
   getWatchlists()
 
-  function initializeRows(arr) {
+  function initializeRows (arr) {
     watchAside.empty()
     const rowsToAdd = []
     rowsToAdd.push(createNewRow(arr))
   }
 
-  function getWatchlists() {
+  function getWatchlists () {
     $.get('/api/watchlist', function (data) {
       const array = []
       data.forEach(element => {
@@ -26,7 +26,7 @@ $(document).ready(function () {
     })
   }
 
-  function createNewRow(arr) {
+  function createNewRow (arr) {
     console.log('createnewrow fx: ', watchlists)
     for (let i = 0; i < arr.length; i++) {
       console.log(arr[i])
@@ -47,7 +47,7 @@ $(document).ready(function () {
     insertNewGroup({ groupName: newGroup })
   })
 
-  function insertNewGroup(listData) {
+  function insertNewGroup (listData) {
     console.log(listData)
     $.post('/api/watchlist', listData).then(getWatchlists)
   }
@@ -80,6 +80,10 @@ $(document).ready(function () {
     }).then(function (response) {
       // CREATE HTML HERE
       // console.log('response: ', response)
+      $('#watchlistContent').empty()
+      const beginColumns = $(`<div class="columns is-multiline" id="watchlistColumns">`)
+      $('#watchlistContent').append(beginColumns)
+
       for (const key in response) {
         const ApiObj = response[key].quote
         const percentYtd = (ApiObj.ytdChange * 100).toFixed(1)
@@ -97,11 +101,15 @@ $(document).ready(function () {
           ytdChange: percentYtd,
           isUSMarketOpen: ApiObj.isUSMarketOpen
         }
-        console.log("data: ", data)
+        console.log('data: ', data)
+        createWatchlist(data)
       }
+      const endColumns = $(`</div>
+      </div>`)
+      $('#watchlistContent').append(endColumns)
     })
   })
-  function createMessage(data) {
+  function createMessage (data) {
     const newMessage = $(`<article class="message">
     <div class="message-header">
       ${data.company}
@@ -129,3 +137,33 @@ $(document).ready(function () {
     $('#watchlistContent').append(newMessage)
   }
 })
+
+function createWatchlist (data) {
+  const columnsContent = $(`<div class="column is-half">
+  <article class="message">
+  <div class="message-header">
+    ${data.company}
+    <button class="delete" aria-label="delete"></button>
+  </div>
+  <div class="message-body">
+  <ul>
+  <li>${data.exchange} - ${data.symbol}</li>
+  <li><span id="priceEmphasis">${data.currentPrice}</span> USD</li>
+  <li>Open: ${data.open}</li>
+  <li>High: ${data.high}</li>
+  <li>Low: ${data.low}</li>
+  <li>52-wk High: ${data.high52}</li>
+  <li>52-wk Low: ${data.low52}</li>
+  <li>Market Cap: ${data.marketCap}</li>
+  <li>YTD: ${data.ytdChange}%</li>
+  </ul>
+  CANVAS CHART GOES HERE
+
+  <p><a class="button is-info" id="newListBtn">
+                  Add to watchlist
+              </a></p>
+  </div>
+</article>
+</div>`)
+  $('#watchlistColumns').append(columnsContent)
+}
