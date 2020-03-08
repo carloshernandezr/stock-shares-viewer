@@ -1,6 +1,7 @@
 $(document).ready(function () {
   const watchAside = $('#watchAside')
   const newListInput = $('#listInput')
+  let listSelect = []
   console.log(newListInput.val())
 
   let watchlists = []
@@ -12,7 +13,7 @@ $(document).ready(function () {
     rowsToAdd.push(createNewRow(arr))
   }
 
-  function getWatchlists () {//para hacer la lista gropup
+  function getWatchlists () { // para hacer la lista gropup
     $.get('/api/watchlist', function (data) {
       const array = []
       data.forEach(element => {
@@ -21,6 +22,8 @@ $(document).ready(function () {
           array.push(watchlists)
         }
       })
+      listSelect = []
+      listSelect = array
       console.log(array)
       initializeRows(array)
     })
@@ -38,8 +41,17 @@ $(document).ready(function () {
       watchAside.append(newInputRow)
     }
   }
-  $('#newListBtn').on('click', function (event) { 
-    event.preventDefault() 
+  function createNewList (arr) {
+    // console.log('createnewrow2 fx: ', listSelect)
+    $('#mySelect').empty()
+    for (let i = 0; i < listSelect.length; i++) {
+      console.log('createnewrow2 fx: ', listSelect[i])
+      $('#mySelect').append('<option value=' + listSelect[i] + '> ' + listSelect[i] + ' </option>')
+    }
+  }
+
+  $('#newListBtn').on('click', function (event) {
+    event.preventDefault()
     const newGroup = $('#listInput').val()
     insertNewGroup({ groupName: newGroup })
   })
@@ -49,18 +61,14 @@ $(document).ready(function () {
     $.post('/api/watchlist', listData).then(getWatchlists)
   }
 
-  //** newbutton2*/  
-  $('body').on('click',"#newListBtn2",function (event) {
+  //* * newbutton2*/
+  $('body').on('click', '#newListBtn2', function (event) {
     event.preventDefault()
     console.log(watchlists)
-    $("#footerBox").toggle()
+    $('#footerBox').toggle()
+    createNewList()
   })
-
-  // function insertNewGroup (listData) {
-  //   console.log(listData)
-  //   $.post('/api/watchlist', listData).then(getWatchlists)
-  // }
-  //** newbutton2*/
+  //* * newbutton2*/
   $('#tickerBtn').on('click', function (event) {
     console.log('test final')
     var ticker = $('#tickerInput').val()
@@ -82,8 +90,7 @@ $(document).ready(function () {
       )
     }
   })
- 
-  
+
   function createMessage (data) {
     const newMessage = $(`<article class="message">
     <div class="message-header">
@@ -101,30 +108,37 @@ $(document).ready(function () {
     <li>Market Cap: ${data.marketCap}</li>
     <li>YTD: ${data.ytdChange}%</li>
     </ul>
+    
     CANVAS CHART GOES HERE
 
     <p><a class="button is-info" id="newListBtn2">
-                    Add to watchlistanother here
+                    Add to watchlist
                 </a></p>
     </div>
 
     <div class="footer" id="footerBox">
-    <div class="field">
+
+    <div class="field has-addons">
     <p class="control has-icons-left">
-      <span class="select">
-        <select>
+      <span class="select" >
+        <select id="mySelect">
           <option selected>Country</option>
           <option>Select dropdown</option>
           <option>With options</option>
         </select>
       </span>
       <span class="icon is-small is-left">
-        <i class="fas fa-globe"></i>
+        <i class="fas fa-chart-line"></i>
       </span>
     </p>
+    <div class="control">
+    <button type="submit" class="button is-info">Save</button>
+  </div>
   </div>
 
-    his a footer
+  </div>
+
+  
     </div>
   </article>`)
     $('#watchlistContent').empty()
