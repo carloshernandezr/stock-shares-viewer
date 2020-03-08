@@ -48,6 +48,7 @@ $(document).ready(function () {
 
   $('#tickerBtn').on('click', function (event) {
     var ticker = $('#tickerInput').val()
+
     const isRegexTrue = /^[a-zA-Z]+$/.test(ticker)
     if (!isRegexTrue) {
       console.log('Invalid search input')
@@ -57,6 +58,7 @@ $(document).ready(function () {
       }).then(
         function (response) {
           createMessage(response)
+          createChart(response)
         }
       )
     }
@@ -96,21 +98,24 @@ $(document).ready(function () {
   function createMessage (data) {
     const newMessage = $(`<article class="message">
     <div class="message-header">
-      ${data.company}
+
+      ${data[0].company}
+      <button class="delete" aria-label="delete"></button>
     </div>
     <div class="message-body">
     <ul>
-    <li>${data.exchange} - ${data.symbol}</li>
-    <li><span id="priceEmphasis">${data.currentPrice}</span> USD</li>
-    <li>Open: ${data.open}</li>
-    <li>High: ${data.high}</li>
-    <li>Low: ${data.low}</li>
-    <li>52-wk High: ${data.high52}</li>
-    <li>52-wk Low: ${data.low52}</li>
-    <li>Market Cap: ${data.marketCap}</li>
-    <li>YTD: ${data.ytdChange}%</li>
+    <li>${data[0].exchange} - ${data[0].symbol}</li>
+    <li>Price: ${data[0].currentPrice} USD</li>
+    <li>Open: ${data[0].open} </li>
+    <li>High: ${data[0].high} </li>
+    <li>Low: ${data[0].low} </li>
+    <li>52-wk High: ${data[0].high52} </li>
+    <li>52-wk Low: ${data[0].low52} </li>
+    <li>Market Cap: ${data[0].marketCap} </li>
+    <li>YTD%: ${data[0].ytdChange} </li>
+
     </ul>
-    CANVAS CHART GOES HERE
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
 
     <p><a class="button is-info" id="newListBtn">
                     Add to watchlist
@@ -119,6 +124,47 @@ $(document).ready(function () {
   </article>`)
     $('#watchlistContent').empty()
     $('#watchlistContent').append(newMessage)
+  }
+  function createChart (data) {
+    // console.log(data[1])
+    data[1].forEach(el => {
+      console.log(el.x)
+      el.x = new Date(el.x)
+    })
+    for (let i = 0; i < data[1].length; i++) {
+      // eslint-disable-next-line no-undef
+      var chart = new CanvasJS.Chart('chartContainer', {
+        animationEnabled: true,
+        theme: 'light2', // "light1", "light2", "dark1", "dark2"
+        exportEnabled: true,
+        title: {
+          text: data[0].company
+        },
+        axisX: {
+          interval: 1,
+          valueFormatString: 'MM DD YYYY'
+        },
+        axisY: {
+          includeZero: false,
+          prefix: '$',
+          title: 'Price'
+        },
+        toolTip: {
+          content:
+            'Date: {x}<br /><strong>Price:</strong><br />Open: {y[0]}, Close: {y[3]}<br />High: {y[1]}, Low: {y[2]}'
+        },
+        data: [
+          {
+            type: 'candlestick',
+            yValueFormatString: '$##0.00',
+            dataPoints: data[1],
+            xValueType: 'dateTime'
+          }
+        ]
+      })
+
+      chart.render()
+    }
   }
 })
 
