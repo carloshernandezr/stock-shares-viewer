@@ -196,10 +196,40 @@ $(document).ready(function () {
   </div>`)
     $('#watchlistColumns').append(columnsContent)
   }
-
-  // DELETE STOCK FROM WATCHLIST
-  $('.delete').on('click', function (event) {
-    event.preventDefault()
-    console.log('clicked a delete')
-  })
+  function deleteStock (stock, group) {
+    console.log('stock: ', stock)
+    console.log('group: ', group)
+    // AJAX to backend
+    $.ajax('/api/watchlist/delete/', {
+      type: 'POST',
+      data: {
+        stock: stock,
+        group: group
+      }
+    }).then(function (response) {
+      console.log('response: ', response)
+      $('#watchlistContent').empty()
+      const beginColumns = $('<div class="columns is-multiline" id="watchlistColumns">')
+      $('#watchlistContent').append(beginColumns)
+      for (const key in response) {
+        const ApiObj = response[key].quote
+        const percentYtd = (ApiObj.ytdChange * 100).toFixed(1)
+        const data = {
+          company: ApiObj.companyName,
+          symbol: ApiObj.symbol,
+          exchange: ApiObj.primaryExchange,
+          currentPrice: ApiObj.latestPrice,
+          open: ApiObj.open,
+          high: ApiObj.close,
+          low: ApiObj.low,
+          low52: ApiObj.week52Low,
+          high52: ApiObj.week52High,
+          marketCap: ApiObj.marketCap,
+          ytdChange: percentYtd,
+          isUSMarketOpen: ApiObj.isUSMarketOpen
+        }
+        createWatchlist(data)
+      }
+    })
+  }
 })
