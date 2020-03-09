@@ -90,6 +90,14 @@ $(document).ready(function () {
         }
         createWatchlist(data)
       }
+      // Attaches event listener after creating messages
+      // handles delete stock functionality
+      $('.deleteBTN').on('click', function (event) {
+        event.preventDefault()
+        const symbol = this.dataset.symbol
+        // console.log('clickedwatchlist: ', clickedWatchlist)
+        deleteStock(symbol, clickedWatchlist)
+      })
       const endColumns = $(`</div>
       </div>`)
       $('#watchlistContent').append(endColumns)
@@ -171,7 +179,7 @@ $(document).ready(function () {
   <div class="message-header">
     ${data.company}
     <span class="tag">Delete
-    <button class="delete" aria-label="delete" data-attribute="${data.symbol}"></button>
+    <button class="delete deleteBTN" aria-label="delete" data-symbol="${data.symbol}"></button>
     </span>
   </div>
   <div class="message-body">
@@ -207,8 +215,8 @@ $(document).ready(function () {
         group: group
       }
     }).then(function (response) {
-      console.log('response: ', response)
-      $('#watchlistContent').empty()
+        console.log('response: ', response)
+        $('#watchlistContent').empty()
       const beginColumns = $('<div class="columns is-multiline" id="watchlistColumns">')
       $('#watchlistContent').append(beginColumns)
       for (const key in response) {
