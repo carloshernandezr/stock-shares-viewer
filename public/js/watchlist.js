@@ -1,10 +1,9 @@
 $(document).ready(function () {
   const watchAside = $('#watchAside')
-  const newListInput = $('#listInput')
-  let listSelect = []
-  console.log(newListInput.val())
 
+  let listSelect = []
   let watchlists = []
+
   getWatchlists()
 
   function initializeRows (arr) {
@@ -13,7 +12,7 @@ $(document).ready(function () {
     rowsToAdd.push(createNewRow(arr))
   }
 
-  function getWatchlists () { // para hacer la lista gropup
+  function getWatchlists () {
     $.get('/api/watchlist', function (data) {
       const array = []
       data.forEach(element => {
@@ -42,7 +41,6 @@ $(document).ready(function () {
     }
   }
   function createNewList (arr) {
-    // console.log('createnewrow2 fx: ', listSelect)
     $('#mySelect').empty()
     for (let i = 0; i < listSelect.length; i++) {
       console.log('createnewrow2 fx: ', listSelect[i])
@@ -61,28 +59,32 @@ $(document).ready(function () {
     $.post('/api/watchlist', listData).then(getWatchlists)
   }
 
-  //* *new button for save stock */
   $('body').on('click', '#saveWL', function (event) {
     event.preventDefault()
-    const newGroup = $('#listInput').val()
-    insertNewGroup({ groupName: newGroup })
-})
+    const GroupSearched = $('#mySelect option:selected').text().trim()
+    const symbol = $('#saveWL').data('symbol')
 
-function insertNewwatchlist (listData) {
-  console.log(listData)
-  $.post('/api/watchlistitem', listData).then(getWatchlists)
-}
-//**new button for save stock */
+    $.ajax('/api/watchlist/save', {
+      type: 'POST',
+      data: {
+        group: GroupSearched,
+        symbol: symbol
+      }
+    }).then(
+      function (response) {
+        console.log('API response', response)
+        console.log('added stock to watchlis db')
+      }
+    )
+  })
 
-
-  //* * newbutton2*/
   $('body').on('click', '#newListBtn2', function (event) {
     event.preventDefault()
     console.log(watchlists)
     $('#footerBox').toggle()
     createNewList()
   })
-  //* * newbutton2*/
+
   $('#tickerBtn').on('click', function (event) {
     console.log('test final')
     var ticker = $('#tickerInput').val()
@@ -98,8 +100,6 @@ function insertNewwatchlist (listData) {
         function (response) {
           console.log('API response', response)
           createMessage(response)
-          // Reload the page to get the updated list
-          // location.reload();
         }
       )
     }
@@ -146,7 +146,7 @@ function insertNewwatchlist (listData) {
       </span>
     </p>
     <div class="control">
-    <button type="submit" id="saveWL"class="button is-info">Save</button>
+    <button type="submit" id="saveWL"  data-symbol="${data.symbol}" class="button is-info">Save</button>
   </div>
   </div>
 
