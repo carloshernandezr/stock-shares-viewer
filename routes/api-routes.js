@@ -62,4 +62,12 @@ module.exports = function (app) {
       res.json(dbWatchlist)
     })
   })
+  //add watchlist tble api
+  app.post('/api/watchlistitem', function (req, res) {
+    console.log(' Data:')
+    console.log(req.body)
+    db.Watchlist.create(req.body).then(function (dbWatchlistT) {
+      res.json(dbWatchlistT)
+    })
+  })
 }

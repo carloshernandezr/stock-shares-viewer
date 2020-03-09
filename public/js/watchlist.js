@@ -61,6 +61,20 @@ $(document).ready(function () {
     $.post('/api/watchlist', listData).then(getWatchlists)
   }
 
+  //* *new button for save stock */
+  $('body').on('click', '#saveWL', function (event) {
+    event.preventDefault()
+    const newGroup = $('#listInput').val()
+    insertNewGroup({ groupName: newGroup })
+})
+
+function insertNewwatchlist (listData) {
+  console.log(listData)
+  $.post('/api/watchlistitem', listData).then(getWatchlists)
+}
+//**new button for save stock */
+
+
   //* * newbutton2*/
   $('body').on('click', '#newListBtn2', function (event) {
     event.preventDefault()
@@ -108,7 +122,7 @@ $(document).ready(function () {
     <li>Market Cap: ${data.marketCap}</li>
     <li>YTD: ${data.ytdChange}%</li>
     </ul>
-    
+
     CANVAS CHART GOES HERE
 
     <p><a class="button is-info" id="newListBtn2">
@@ -132,7 +146,7 @@ $(document).ready(function () {
       </span>
     </p>
     <div class="control">
-    <button type="submit" class="button is-info">Save</button>
+    <button type="submit" id="saveWL"class="button is-info">Save</button>
   </div>
   </div>
 
