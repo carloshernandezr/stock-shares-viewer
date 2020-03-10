@@ -71,7 +71,6 @@ module.exports = function (app) {
     const ticker = req.params.ticker.toUpperCase()
     const queryUrl = `https://sandbox.iexapis.com/stable/stock/market/batch?symbols=${ticker}&types=quote,chart&token=${sandboxApiKey}`
     axios.get(queryUrl).then(function (result) {
-      console.log('result: ', result.data)
       const stockData = result.data[ticker].quote
       const chartStuff = result.data[ticker].chart
       const data = [
@@ -90,7 +89,6 @@ module.exports = function (app) {
           isUSMarketOpen: stockData.isUSMarketOpen
         }
       ]
-      console.log('data: ', data)
       // Chart data is gathered here
       const dataPoints = []
 
