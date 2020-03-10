@@ -23,7 +23,6 @@ $(document).ready(function () {
       })
       listSelect = []
       listSelect = array
-      console.log(array)
       initializeRows(array)
     })
   }
@@ -85,16 +84,21 @@ $(document).ready(function () {
     createNewList()
   })
 
-  $('#searchForm').on('click', function (event) {
+  $('#searchForm').on('submit', function (event) {
     event.preventDefault()
     var ticker = $('#tickerInput').val()
     $('#tickerInput').val('')
     const isRegexTrue = /^[a-zA-Z]+$/.test(ticker)
     if (!isRegexTrue) {
-      console.log('Invalid search input')
+      $('#watchlistContent').empty()
+      $('#watchlistContent').html('Invalid search input')
     } else {
       $.ajax('/api/watchlist/search/' + ticker, {
-        type: 'GET'
+        type: 'GET',
+        error: function (err) {
+          $('#watchlistContent').empty()
+          $('#watchlistContent').html(err.statusText + ': Invalid symbol')
+        }
       }).then(
         function (response) {
           createMessage(response)
@@ -106,7 +110,12 @@ $(document).ready(function () {
   // Handles displaying data when watchlist is clicked
   watchAside.on('click', 'li', function (event) {
     const clickedWatchlist = this.dataset.ticker
-    $.ajax('/api/watchlist/' + clickedWatchlist, function (data) {
+    $.ajax('/api/watchlist/' + clickedWatchlist, {
+      type: 'GET',
+      error: function (err) {
+        $('#watchlistContent').empty()
+        $('#watchlistContent').html(err.statusText + ': No stocks saved in the ' + clickedWatchlist + ' watchlist')
+      }
     }).then(function (response) {
       $('#watchlistContent').empty()
       const beginColumns = $('<div class="columns is-multiline" id="watchlistColumns">')
