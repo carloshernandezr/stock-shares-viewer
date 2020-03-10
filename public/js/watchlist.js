@@ -1,7 +1,9 @@
 $(document).ready(function () {
   const watchAside = $('#watchAside')
 
+  let listSelect = []
   let watchlists = []
+
   getWatchlists()
 
   function initializeRows (arr) {
@@ -19,6 +21,9 @@ $(document).ready(function () {
           array.push(watchlists)
         }
       })
+      listSelect = []
+      listSelect = array
+      console.log(array)
       initializeRows(array)
     })
   }
@@ -35,6 +40,13 @@ $(document).ready(function () {
       watchAside.append(newInputRow)
     }
   }
+  function createNewList (arr) {
+    $('#mySelect').empty()
+    for (let i = 0; i < listSelect.length; i++) {
+      console.log('createnewrow2 fx: ', listSelect[i])
+      $('#mySelect').append('<option value=' + listSelect[i] + '> ' + listSelect[i] + ' </option>')
+    }
+  }
 
   $('#newListBtn').on('click', function (event) {
     event.preventDefault()
@@ -46,7 +58,34 @@ $(document).ready(function () {
     $.post('/api/watchlist', listData).then(getWatchlists)
   }
 
+  $('body').on('click', '#saveWL', function (event) {
+    event.preventDefault()
+    const GroupSearched = $('#mySelect option:selected').text().trim()
+    const symbol = $('#saveWL').data('symbol')
+
+    $.ajax('/api/watchlist/save', {
+      type: 'POST',
+      data: {
+        group: GroupSearched,
+        symbol: symbol
+      }
+    }).then(
+      function (response) {
+        console.log('API response', response)
+        console.log('added stock to watchlis db')
+      }
+    )
+  })
+
+  $('body').on('click', '#newListBtn2', function (event) {
+    event.preventDefault()
+    console.log(watchlists)
+    $('#footerBox').toggle()
+    createNewList()
+  })
+
   $('#tickerBtn').on('click', function (event) {
+    console.log('test final')
     var ticker = $('#tickerInput').val()
 
     const isRegexTrue = /^[a-zA-Z]+$/.test(ticker)
@@ -123,9 +162,34 @@ $(document).ready(function () {
     </ul>
     <div id="chartContainer" style="height: 370px; width: 100%;"></div>
 
-    <p><a class="button is-info" id="newListBtn">
+    <p><a class="button is-info" id="newListBtn2">
                     Add to watchlist
                 </a></p>
+    </div>
+
+    <div class="footer" id="footerBox">
+
+    <div class="field has-addons">
+    <p class="control has-icons-left">
+      <span class="select" >
+        <select id="mySelect">
+          <option selected>Country</option>
+          <option>Select dropdown</option>
+          <option>With options</option>
+        </select>
+      </span>
+      <span class="icon is-small is-left">
+        <i class="fas fa-chart-line"></i>
+      </span>
+    </p>
+    <div class="control">
+    <button type="submit" id="saveWL"  data-symbol="${data[0].symbol}" class="button is-info">Save</button>
+  </div>
+  </div>
+
+  </div>
+
+  
     </div>
   </article>`)
     $('#watchlistContent').empty()
