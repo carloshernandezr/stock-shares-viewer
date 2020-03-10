@@ -115,12 +115,43 @@ module.exports = function (app) {
       res.json(dbWatchlist)
     })
   })
-  //add watchlist tble api
-  // app.post('/api/watchlistitem', function (req, res) {
-  //   console.log(' Data:')
-  //   console.log(req.body)
-  //   db.Watchlist.create(req.body).then(function (dbWatchlistT) {
-  //     res.json(dbWatchlistT)
-  //   })
-  // })
+
+  // backend delete api hit
+  app.post('/api/watchlist/delete/', function (req, res) {
+    // const symbol = req.params.symbol
+    // console.log('symbol: ', symbol)
+    // console.log('req.body: ', req.body)
+    db.Group.findAll({
+      include: db.Watchlist,
+      where: {
+        groupName: req.body.group
+      }
+    }).then(function (result) {
+      const groupId = result[0].dataValues.id
+      db.Watchlist.destroy({
+        where: {
+          GroupId: groupId,
+          ticker: req.body.stock
+        }
+      }).then(function (result) {
+        // need to repopulate watchlist messages after new api hit
+        db.Group.findAll({
+          include: db.Watchlist,
+          where: {
+            groupName: req.body.group
+          }
+        }).then(function (result) {
+          const array = []
+          result[0].Watchlists.map(obj => array.push(obj.ticker))
+          const combinedTickers = array.join()
+          const queryUrl = `https://sandbox.iexapis.com/stable/stock/market/batch?symbols=${combinedTickers}&types=quote&token=${sandboxApiKey}`
+          axios.get(queryUrl)
+            .then(function (result) {
+              res.json(result.data)
+            })
+        })
+        // res.json(result)
+      })
+    })
+  })
 }

@@ -129,6 +129,14 @@ $(document).ready(function () {
         }
         createWatchlist(data)
       }
+      // Attaches event listener after creating messages
+      // handles delete stock functionality
+      $('.deleteBTN').on('click', function (event) {
+        event.preventDefault()
+        const symbol = this.dataset.symbol
+        // console.log('clickedwatchlist: ', clickedWatchlist)
+        deleteStock(symbol, clickedWatchlist)
+      })
       const endColumns = $(`</div>
       </div>`)
       $('#watchlistContent').append(endColumns)
@@ -137,9 +145,7 @@ $(document).ready(function () {
   function createMessage (data) {
     const newMessage = $(`<article class="message">
     <div class="message-header">
-
       ${data[0].company}
-      <button class="delete" aria-label="delete"></button>
     </div>
     <div class="message-body">
     <ul>
@@ -192,7 +198,7 @@ $(document).ready(function () {
   function createChart (data) {
     // console.log(data[1])
     data[1].forEach(el => {
-      console.log(el.x)
+      // console.log(el.x)
       el.x = new Date(el.x)
     })
     for (let i = 0; i < data[1].length; i++) {
@@ -230,14 +236,15 @@ $(document).ready(function () {
       chart.render()
     }
   }
-})
 
-function createWatchlist (data) {
-  const columnsContent = $(`<div class="column is-half">
+  function createWatchlist (data) {
+    const columnsContent = $(`<div class="column is-half">
   <article class="message">
   <div class="message-header">
     ${data.company}
-    <button class="delete" aria-label="delete"></button>
+    <span class="tag">Delete
+    <button class="delete deleteBTN" aria-label="delete" data-symbol="${data.symbol}"></button>
+    </span>
   </div>
   <div class="message-body">
   <ul>
@@ -257,7 +264,44 @@ function createWatchlist (data) {
                   Add to watchlist
               </a></p>
   </div>
-</article>
-</div>`)
-  $('#watchlistColumns').append(columnsContent)
-}
+  </article>
+  </div>`)
+    $('#watchlistColumns').append(columnsContent)
+  }
+  function deleteStock (stock, group) {
+    console.log('stock: ', stock)
+    console.log('group: ', group)
+    // AJAX to backend
+    $.ajax('/api/watchlist/delete/', {
+      type: 'POST',
+      data: {
+        stock: stock,
+        group: group
+      }
+    }).then(function (response) {
+      console.log('response: ', response)
+      $('#watchlistContent').empty()
+      const beginColumns = $('<div class="columns is-multiline" id="watchlistColumns">')
+      $('#watchlistContent').append(beginColumns)
+      for (const key in response) {
+        const ApiObj = response[key].quote
+        const percentYtd = (ApiObj.ytdChange * 100).toFixed(1)
+        const data = {
+          company: ApiObj.companyName,
+          symbol: ApiObj.symbol,
+          exchange: ApiObj.primaryExchange,
+          currentPrice: ApiObj.latestPrice,
+          open: ApiObj.open,
+          high: ApiObj.close,
+          low: ApiObj.low,
+          low52: ApiObj.week52Low,
+          high52: ApiObj.week52High,
+          marketCap: ApiObj.marketCap,
+          ytdChange: percentYtd,
+          isUSMarketOpen: ApiObj.isUSMarketOpen
+        }
+        createWatchlist(data)
+      }
+    })
+  }
+})
