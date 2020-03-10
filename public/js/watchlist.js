@@ -215,8 +215,8 @@ $(document).ready(function () {
         group: group
       }
     }).then(function (response) {
-        console.log('response: ', response)
-        $('#watchlistContent').empty()
+      console.log('response: ', response)
+      $('#watchlistContent').empty()
       const beginColumns = $('<div class="columns is-multiline" id="watchlistColumns">')
       $('#watchlistContent').append(beginColumns)
       for (const key in response) {
