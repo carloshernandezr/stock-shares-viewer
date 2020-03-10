@@ -16,7 +16,6 @@ module.exports = function (app) {
   app.get('/api/watchlist', function (req, res) {
     db.Group.findAll({
       include: db.Watchlist
-      // where: db.Group.groupId = 1
     }).then(function (result) {
       return res.json(result)
     })
