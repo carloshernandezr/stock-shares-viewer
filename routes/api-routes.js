@@ -60,7 +60,6 @@ module.exports = function (app) {
       db.Watchlist.create(obj).then(function (result) {
         return res.json(result)
       })
-
     })
   })
 
