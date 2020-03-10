@@ -55,26 +55,26 @@
     <div class="columns is-fullheight">
         <div class="column is-2 is-sidebar-menu is-hidden-mobile">
             <aside class="menu">
-                <div class="field has-addons">
+                <form class="field has-addons" id="searchForm">
                     <div class="control">
                         <input class="input" id="tickerInput" type="text" placeholder="Find a stock">
                     </div>
                     <div class="control">
-                        <a class="button is-info" id="tickerBtn">
+                        <button type="submit" class="button is-info" id="tickerBtn">
                             Search
-                        </a>
+                        </button>
                     </div>
-                </div>
-                <div class="field has-addons">
+                </form>
+                <form class="field has-addons" id='watchlistForm'>
                     <div class="control">
                         <input class="input" id="listInput" type="text" placeholder="Enter New Watchlist">
                     </div>
                     <div class="control">
-                        <a class="button is-info" id="newListBtn">
+                        <button type="submit" class="button is-info" id="newListBtn">
                             Add watchlist
-                        </a>
+                        </button>
                     </div>
-                </div>
+                </form>
                 <p class="menu-label">
                     Watchlists
                 </p>

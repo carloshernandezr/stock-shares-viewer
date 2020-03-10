@@ -52,6 +52,7 @@ $(document).ready(function () {
     event.preventDefault()
     const newGroup = $('#listInput').val()
     insertNewGroup({ groupName: newGroup })
+    $('#listInput').val('')
   })
 
   function insertNewGroup (listData) {
@@ -84,10 +85,10 @@ $(document).ready(function () {
     createNewList()
   })
 
-  $('#tickerBtn').on('click', function (event) {
-    console.log('test final')
+  $('#searchForm').on('click', function (event) {
+    event.preventDefault()
     var ticker = $('#tickerInput').val()
-
+    $('#tickerInput').val('')
     const isRegexTrue = /^[a-zA-Z]+$/.test(ticker)
     if (!isRegexTrue) {
       console.log('Invalid search input')
