@@ -21,21 +21,12 @@ module.exports = function (app) {
       return res.json(result)
     })
   })
-<<<<<<< HEAD
-  app.get('/api/groups/:groupnam', function (req, res) {
-    // const id = (req.params.groupId)
-    db.Group.findOne({
-      // include: db.group,
-      where: {
-        groupName: req.params.groupName
-=======
   app.get('/api/watchlist/:clickedWatchlist', function (req, res) {
     const clickedWatchlist = (req.params.clickedWatchlist)
     db.Group.findAll({
       include: db.Watchlist,
       where: {
         groupName: clickedWatchlist
->>>>>>> master
       }
     }).then(function (result) {
       const array = []

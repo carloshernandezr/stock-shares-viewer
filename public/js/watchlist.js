@@ -21,12 +21,9 @@ $(document).ready(function () {
           array.push(watchlists)
         }
       })
-<<<<<<< HEAD
       listSelect = []
       listSelect = array
       console.log(array)
-=======
->>>>>>> master
       initializeRows(array)
     })
   }
@@ -100,17 +97,11 @@ $(document).ready(function () {
       }).then(
         function (response) {
           createMessage(response)
-<<<<<<< HEAD
-=======
           createChart(response)
->>>>>>> master
         }
       )
     }
   })
-<<<<<<< HEAD
-
-=======
   // Handles displaying data when watchlist is clicked
   watchAside.on('click', 'li', function (event) {
     const clickedWatchlist = this.dataset.ticker
@@ -143,7 +134,6 @@ $(document).ready(function () {
       $('#watchlistContent').append(endColumns)
     })
   })
->>>>>>> master
   function createMessage (data) {
     const newMessage = $(`<article class="message">
     <div class="message-header">
@@ -164,12 +154,7 @@ $(document).ready(function () {
     <li>YTD%: ${data[0].ytdChange} </li>
 
     </ul>
-<<<<<<< HEAD
-
-    CANVAS CHART GOES HERE
-=======
     <div id="chartContainer" style="height: 370px; width: 100%;"></div>
->>>>>>> master
 
     <p><a class="button is-info" id="newListBtn2">
                     Add to watchlist
@@ -192,7 +177,7 @@ $(document).ready(function () {
       </span>
     </p>
     <div class="control">
-    <button type="submit" id="saveWL"  data-symbol="${data.symbol}" class="button is-info">Save</button>
+    <button type="submit" id="saveWL"  data-symbol="${data[0].symbol}" class="button is-info">Save</button>
   </div>
   </div>
 
