@@ -110,7 +110,12 @@ $(document).ready(function () {
   // Handles displaying data when watchlist is clicked
   watchAside.on('click', 'li', function (event) {
     const clickedWatchlist = this.dataset.ticker
-    $.ajax('/api/watchlist/' + clickedWatchlist, function (data) {
+    $.ajax('/api/watchlist/' + clickedWatchlist, {
+      type: 'GET',
+      error: function (err) {
+        $('#watchlistContent').empty()
+        $('#watchlistContent').html(err.statusText + ': No stocks saved in the ' + clickedWatchlist + ' watchlist')
+      }
     }).then(function (response) {
       $('#watchlistContent').empty()
       const beginColumns = $('<div class="columns is-multiline" id="watchlistColumns">')
