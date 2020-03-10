@@ -91,11 +91,7 @@ module.exports = function (app) {
     })
   })
 
-  // backend delete api hit
   app.post('/api/watchlist/delete/', function (req, res) {
-    // const symbol = req.params.symbol
-    // console.log('symbol: ', symbol)
-    // console.log('req.body: ', req.body)
     db.Group.findAll({
       include: db.Watchlist,
       where: {
@@ -109,7 +105,6 @@ module.exports = function (app) {
           ticker: req.body.stock
         }
       }).then(function (result) {
-        // need to repopulate watchlist messages after new api hit
         db.Group.findAll({
           include: db.Watchlist,
           where: {
@@ -125,7 +120,6 @@ module.exports = function (app) {
               res.json(result.data)
             })
         })
-        // res.json(result)
       })
     })
   })
