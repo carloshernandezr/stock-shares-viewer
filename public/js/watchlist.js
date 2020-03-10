@@ -23,7 +23,6 @@ $(document).ready(function () {
       })
       listSelect = []
       listSelect = array
-      console.log(array)
       initializeRows(array)
     })
   }
