@@ -84,16 +84,21 @@ $(document).ready(function () {
     createNewList()
   })
 
-  $('#searchForm').on('click', function (event) {
+  $('#searchForm').on('submit', function (event) {
     event.preventDefault()
     var ticker = $('#tickerInput').val()
     $('#tickerInput').val('')
     const isRegexTrue = /^[a-zA-Z]+$/.test(ticker)
     if (!isRegexTrue) {
-      console.log('Invalid search input')
+      $('#watchlistContent').empty()
+      $('#watchlistContent').html('Invalid search input')
     } else {
       $.ajax('/api/watchlist/search/' + ticker, {
-        type: 'GET'
+        type: 'GET',
+        error: function (err) {
+          $('#watchlistContent').empty()
+          $('#watchlistContent').html(err.statusText + ': Invalid symbol')
+        }
       }).then(
         function (response) {
           createMessage(response)

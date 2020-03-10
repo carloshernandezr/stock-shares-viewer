@@ -108,6 +108,8 @@ module.exports = function (app) {
       }
       data.push(dataPoints)
       res.json(data)
+    }).catch(function (err) {
+      res.status(400).json(err)
     })
   })
   // Create new watchlist functionality
