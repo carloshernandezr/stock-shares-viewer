@@ -1,3 +1,7 @@
 #priceEmphasis {
     font-size: 2em;
 }
+
+#footerBox{
+    display: none;
+}

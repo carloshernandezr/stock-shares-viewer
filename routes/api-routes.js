@@ -39,6 +39,30 @@ module.exports = function (app) {
         })
     })
   })
+  app.post('/api/watchlist/save', function (req, res) {
+    const group = (req.body.group)
+    const symbol = (req.body.symbol)
+    console.log('group: ', group)
+    console.log('symbol is:', symbol)
+    db.Group.findOne({
+      // include: db.Watchlist,
+      where: {
+        groupName: group
+      }
+    }).then(function (result) {
+    //  console.log(result)
+      console.log('id ', result.dataValues.id)
+      const id = result.dataValues.id
+      const obj = {
+        ticker: symbol,
+        GroupId: id
+      }
+      db.Watchlist.create(obj).then(function (result) {
+        return res.json(result)
+      })
+    })
+  })
+
   app.get('/api/watchlist/search/:ticker', function (req, res) {
     const ticker = req.params.ticker.toUpperCase()
     const queryUrl = `https://sandbox.iexapis.com/stable/stock/market/batch?symbols=${ticker}&types=quote,chart&token=${sandboxApiKey}`
