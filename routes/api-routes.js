@@ -21,15 +21,31 @@ module.exports = function (app) {
       return res.json(result)
     })
   })
+<<<<<<< HEAD
   app.get('/api/groups/:groupnam', function (req, res) {
     // const id = (req.params.groupId)
     db.Group.findOne({
       // include: db.group,
       where: {
         groupName: req.params.groupName
+=======
+  app.get('/api/watchlist/:clickedWatchlist', function (req, res) {
+    const clickedWatchlist = (req.params.clickedWatchlist)
+    db.Group.findAll({
+      include: db.Watchlist,
+      where: {
+        groupName: clickedWatchlist
+>>>>>>> master
       }
     }).then(function (result) {
-      return res.json(result)
+      const array = []
+      result[0].Watchlists.map(obj => array.push(obj.ticker))
+      const combinedTickers = array.join()
+      const queryUrl = `https://sandbox.iexapis.com/stable/stock/market/batch?symbols=${combinedTickers}&types=quote&token=${sandboxApiKey}`
+      axios.get(queryUrl)
+        .then(function (result) {
+          res.json(result.data)
+        })
     })
   })
   app.post('/api/watchlist/save', function (req, res) {
@@ -58,32 +74,52 @@ module.exports = function (app) {
   })
 
   app.get('/api/watchlist/search/:ticker', function (req, res) {
-    const ticker = (req.params.ticker).toUpperCase()
-    const queryUrl = `https://sandbox.iexapis.com/stable/stock/market/batch?symbols=${ticker}&types=quote&token=${sandboxApiKey}`
-    axios.get(queryUrl)
-      .then(function (result) {
-        // console.log(result.data)
-        const percentYtd = (result.data[ticker].quote.ytdChange * 100).toFixed(1)
-        const data = {
-          company: result.data[ticker].quote.companyName,
-          symbol: result.data[ticker].quote.symbol,
-          exchange: result.data[ticker].quote.primaryExchange,
-          currentPrice: result.data[ticker].quote.latestPrice,
-          open: result.data[ticker].quote.open,
-          high: result.data[ticker].quote.close,
-          low: result.data[ticker].quote.low,
-          low52: result.data[ticker].quote.week52Low,
-          high52: result.data[ticker].quote.week52High,
-          marketCap: result.data[ticker].quote.marketCap,
-          ytdChange: percentYtd,
-          isUSMarketOpen: result.data[ticker].quote.isUSMarketOpen
+    const ticker = req.params.ticker.toUpperCase()
+    const queryUrl = `https://sandbox.iexapis.com/stable/stock/market/batch?symbols=${ticker}&types=quote,chart&token=${sandboxApiKey}`
+    axios.get(queryUrl).then(function (result) {
+      const stockData = result.data[ticker].quote
+      const chartStuff = result.data[ticker].chart
+      const data = [
+        {
+          company: stockData.companyName,
+          symbol: stockData.symbol,
+          exchange: stockData.primaryExchange,
+          currentPrice: stockData.latestPrice,
+          open: stockData.open,
+          high: stockData.close,
+          low: stockData.low,
+          low52: stockData.week52Low,
+          high52: stockData.week52High,
+          marketCap: stockData.marketCap,
+          ytdChange: stockData.ytdChange,
+          isUSMarketOpen: stockData.isUSMarketOpen
         }
-        console.log(data)
-        res.json(data)
-      })
+      ]
+
+      const dataPoints = []
+
+      for (let i = 0; i < chartStuff.length; i++) {
+        const chartData = {
+          x: new Date(parseInt(chartStuff[i].date.split('-')[0]),
+            parseInt(chartStuff[i].date.split('-')[1]),
+            parseInt(chartStuff[i].date.split('-')[2])),
+
+          y: [
+            parseFloat(chartStuff[i].open),
+            parseFloat(chartStuff[i].high),
+            parseFloat(chartStuff[i].low),
+            parseFloat(chartStuff[i].close)
+          ]
+        }
+
+        dataPoints.push(chartData)
+      }
+      data.push(dataPoints)
+      res.json(data)
+    })
   })
+
   app.post('/api/watchlist', function (req, res) {
-    console.log(req.body)
     db.Group.create(req.body).then(function (dbWatchlist) {
       res.json(dbWatchlist)
     })
