@@ -13,6 +13,7 @@ const sandboxApiKey = 'Tpk_34cea288c0494864ae04a08d5ad02dc2'
 // Routes
 // =============================================================
 module.exports = function (app) {
+  // Populating watchlist route
   app.get('/api/watchlist', function (req, res) {
     db.Group.findAll({
       include: db.Watchlist
@@ -20,6 +21,7 @@ module.exports = function (app) {
       return res.json(result)
     })
   })
+  // Gather API data when clicking watchlist data
   app.get('/api/watchlist/:clickedWatchlist', function (req, res) {
     const clickedWatchlist = (req.params.clickedWatchlist)
     db.Group.findAll({
@@ -38,6 +40,7 @@ module.exports = function (app) {
         })
     })
   })
+  // Gather API data and chart for stock search
   app.get('/api/watchlist/search/:ticker', function (req, res) {
     const ticker = req.params.ticker.toUpperCase()
     const queryUrl = `https://sandbox.iexapis.com/stable/stock/market/batch?symbols=${ticker}&types=quote,chart&token=${sandboxApiKey}`
@@ -60,7 +63,7 @@ module.exports = function (app) {
           isUSMarketOpen: stockData.isUSMarketOpen
         }
       ]
-
+      // Chart data is gathered here
       const dataPoints = []
 
       for (let i = 0; i < chartStuff.length; i++) {
@@ -83,13 +86,13 @@ module.exports = function (app) {
       res.json(data)
     })
   })
-
+  // Create new watchlist functionality
   app.post('/api/watchlist', function (req, res) {
     db.Group.create(req.body).then(function (dbWatchlist) {
       res.json(dbWatchlist)
     })
   })
-
+  // Delete stock from watchlist functionality
   app.post('/api/watchlist/delete/', function (req, res) {
     db.Group.findAll({
       include: db.Watchlist,
