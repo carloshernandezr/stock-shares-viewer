@@ -205,7 +205,7 @@ $(document).ready(function () {
         </div>
       </div>
     </div>
-  </article>`);
+  </article>`)
     $('#watchlistContent').empty()
     $('#watchlistContent').append(newMessage)
     createNewList()
