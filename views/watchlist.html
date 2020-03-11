@@ -44,46 +44,41 @@
         <br>
         <!-- Aside Menu -->
 
-        <div class="columns is-centered is-variable is-5 is-fullheight">
-            <div class="column is-narrow is-sidebar-menu is-hidden-mobile is-offset-1">
-                <aside class="menu">
-                    <div class="field has-addons">
-                        <div class="control">
-                            <input class="input" id="tickerInput" type="text" placeholder="Find a stock">
-                        </div>
-                        <p class="control">
-                            <button class="button is-info" id="tickerBtn">
-                                <span class="icon">
-                                    <i class="fa fa-search" aria-hidden="true"></i>
-                                </span>
-                            </button>
-                        </p>
+        </div>
+    </nav>
+    <!-- Aside Menu -->
+    <div class="columns is-fullheight">
+        <div class="column is-2 is-sidebar-menu is-hidden-mobile">
+            <aside class="menu">
+                <form class="field has-addons" id="searchForm">
+                    <div class="control">
+                        <input class="input" id="tickerInput" type="text" placeholder="Find a stock">
                     </div>
-                    <div class="field has-addons">
-                        <div class="control">
-                            <input class="input" id="listInput" type="text" placeholder="Create New Watchlist">
-                        </div>
-                        <p class="control">
-                            <button class="button is-info" id="newListBtn">
-                                <span class="icon">
-                                    <i class="fas fa-plus"></i>
-                                </span>
-                            </button>
-                        </p>
+                    <div class="control">
+                        <button type="submit" class="button is-info" id="tickerBtn">
+                            Search
+                        </button>
                     </div>
-                    <p class="menu-label">
-                        Watchlists
-                    </p>
-                    <ul class="menu-list" id="watchAside">
-                    </ul>
-                </aside>
-            </div>
-
-            <!-- Main Content Area -->
-
-            <div class="column is-main-content" id="watchlistContent"></div>
-            <div class="column is-1"></div>
-
+                </form>
+                <form class="field has-addons" id='watchlistForm'>
+                    <div class="control">
+                        <input class="input" id="listInput" type="text" placeholder="Enter New Watchlist">
+                    </div>
+                    <div class="control">
+                        <button type="submit" class="button is-info" id="newListBtn">
+                            Add watchlist
+                        </button>
+                    </div>
+                </form>
+                <p class="menu-label">
+                    Watchlists
+                </p>
+                <ul class="menu-list" id="watchAside">
+                </ul>
+            </aside>
+        </div>
+        <!-- Main Content Area -->
+        <div class="column is-main-content" id="watchlistContent">
         </div>
 
         <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
