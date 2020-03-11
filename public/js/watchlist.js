@@ -85,7 +85,6 @@ $(document).ready(function () {
   })
 
   $('#tickerBtn').on('click', function (event) {
-    console.log('test final')
     var ticker = $('#tickerInput').val()
 
     const isRegexTrue = /^[a-zA-Z]+$/.test(ticker)
@@ -143,7 +142,7 @@ $(document).ready(function () {
     })
   })
   function createMessage (data) {
-    const newMessage = $(`<article class="message">
+    const newMessage = $(`<article class="message"><div class="columns"><div class="column">
     <div class="message-header">
       ${data[0].company}
     </div>
@@ -160,7 +159,7 @@ $(document).ready(function () {
     <li>YTD%: ${data[0].ytdChange} </li>
 
     </ul>
-    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    
 
     <p><a class="button is-info" id="newListBtn2">
                     Add to watchlist
@@ -188,10 +187,12 @@ $(document).ready(function () {
   </div>
 
   </div>
-
-  
+  </div>
+    <div class="column">
+  <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+  </div>
     </div>
-  </article>`)
+  </article>`);
     $('#watchlistContent').empty()
     $('#watchlistContent').append(newMessage)
   }
@@ -203,35 +204,37 @@ $(document).ready(function () {
     })
     for (let i = 0; i < data[1].length; i++) {
       // eslint-disable-next-line no-undef
-      var chart = new CanvasJS.Chart('chartContainer', {
+      var chart = new CanvasJS.Chart("chartContainer", {
         animationEnabled: true,
-        theme: 'light2', // "light1", "light2", "dark1", "dark2"
+        theme: "dark2", // "light1", "light2", "dark1", "dark2"
         exportEnabled: true,
         title: {
-          text: data[0].company
+          text: data[0].company,
         },
         axisX: {
-          interval: 1,
-          valueFormatString: 'MM DD YYYY'
+          intervalType: 'day',
+          valueFormatString: "MM DD YYYY",
         },
         axisY: {
           includeZero: false,
-          prefix: '$',
-          title: 'Price'
+          prefix: "$",
+          title: "Price",
         },
         toolTip: {
           content:
-            'Date: {x}<br /><strong>Price:</strong><br />Open: {y[0]}, Close: {y[3]}<br />High: {y[1]}, Low: {y[2]}'
+            "Date: {x}<br /><strong>Price:</strong><br />Open: {y[0]}, Close: {y[3]}<br />High: {y[1]}, Low: {y[2]}",
         },
         data: [
           {
-            type: 'candlestick',
-            yValueFormatString: '$##0.00',
+            type: "candlestick",
+            yValueFormatString: "$##0.00",
             dataPoints: data[1],
-            xValueType: 'dateTime'
-          }
-        ]
-      })
+            xValueType: "dateTime",
+            risingColor: "#66ff33",
+            color: "#ff0000",
+          },
+        ],
+      });
 
       chart.render()
     }
@@ -258,19 +261,12 @@ $(document).ready(function () {
   <li>Market Cap: ${data.marketCap}</li>
   <li>YTD: ${data.ytdChange}%</li>
   </ul>
-  CANVAS CHART GOES HERE
-
-  <p><a class="button is-info" id="newListBtn">
-                  Add to watchlist
-              </a></p>
   </div>
   </article>
   </div>`)
     $('#watchlistColumns').append(columnsContent)
   }
   function deleteStock (stock, group) {
-    console.log('stock: ', stock)
-    console.log('group: ', group)
     // AJAX to backend
     $.ajax('/api/watchlist/delete/', {
       type: 'POST',
