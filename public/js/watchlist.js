@@ -39,6 +39,8 @@ $(document).ready(function () {
       watchAside.append(newInputRow)
     }
   }
+
+  // populates the dropdown list when adding to watchlist
   function createNewList (arr) {
     $('#mySelect').empty()
     for (let i = 0; i < listSelect.length; i++) {
@@ -75,13 +77,6 @@ $(document).ready(function () {
         console.log('added stock to watchlis db')
       }
     )
-  })
-
-  $('body').on('click', '#newListBtn2', function (event) {
-    event.preventDefault()
-    console.log(watchlists)
-    $('#footerBox').toggle()
-    createNewList()
   })
 
   $('#searchForm').on('submit', function (event) {
@@ -156,59 +151,64 @@ $(document).ready(function () {
     })
   })
   function createMessage (data) {
-    const newMessage = $(`<article class="message"><div class="columns"><div class="column">
-    <div class="message-header">
-      ${data[0].company}
+    const newMessage = $(`<article class="message">
+    <div class="columns">
+      <div class="column">
+        <div class="message-header">
+          ${data[0].company}
+        </div>
+        <div class="message-body">
+          <ul>
+          <li>${data[0].exchange} - ${data[0].symbol}</li>
+          <li>Price: ${data[0].currentPrice} USD</li>
+          <li>Open: ${data[0].open} </li>
+          <li>High: ${data[0].high} </li>
+          <li>Low: ${data[0].low} </li>
+          <li>52-wk High: ${data[0].high52} </li>
+          <li>52-wk Low: ${data[0].low52} </li>
+          <li>Market Cap: ${data[0].marketCap} </li>
+          <li>YTD%: ${data[0].ytdChange} </li>
+          </ul>
+        <br>
+        <div class="field is-horizontal">
+            <div class="field-label">
+              <label class="label">Add To Watchlist</label>
+            </div>
+            <div class="field-body">
+              <div class="field has-addons">
+                <p class="control has-icons-left">
+                  <span class="select" >
+                    <select id="mySelect">
+                      <option selected>Country</option>
+                      <option>Select dropdown</option>
+                      <option>With options</option>
+                    </select>
+                  </span>
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-chart-line"></i>
+                  </span>
+                </p>
+                <div class="control">
+                  <button type="submit" id="saveWL"  data-symbol="${data[0].symbol}" class="button is-info">
+                    <span class="icon">
+                      <i class="fas fa-plus"></i>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div id="chartContainer" style="height: 300px; width: 100%;">
+        </div>
+      </div>
     </div>
-    <div class="message-body">
-    <ul>
-    <li>${data[0].exchange} - ${data[0].symbol}</li>
-    <li>Price: ${data[0].currentPrice} USD</li>
-    <li>Open: ${data[0].open} </li>
-    <li>High: ${data[0].high} </li>
-    <li>Low: ${data[0].low} </li>
-    <li>52-wk High: ${data[0].high52} </li>
-    <li>52-wk Low: ${data[0].low52} </li>
-    <li>Market Cap: ${data[0].marketCap} </li>
-    <li>YTD%: ${data[0].ytdChange} </li>
-
-    </ul>
-    
-
-    <p><a class="button is-info" id="newListBtn2">
-                    Add to watchlist
-                </a></p>
-    </div>
-
-    <div class="footer" id="footerBox">
-
-    <div class="field has-addons">
-    <p class="control has-icons-left">
-      <span class="select" >
-        <select id="mySelect">
-          <option selected>Country</option>
-          <option>Select dropdown</option>
-          <option>With options</option>
-        </select>
-      </span>
-      <span class="icon is-small is-left">
-        <i class="fas fa-chart-line"></i>
-      </span>
-    </p>
-    <div class="control">
-    <button type="submit" id="saveWL"  data-symbol="${data[0].symbol}" class="button is-info">Save</button>
-  </div>
-  </div>
-
-  </div>
-  </div>
-    <div class="column">
-  <div id="chartContainer" style="height: 300px; width: 100%;"></div>
-  </div>
-    </div>
-  </article>`)
+  </article>`);
     $('#watchlistContent').empty()
     $('#watchlistContent').append(newMessage)
+    createNewList()
   }
   function createChart (data) {
     // console.log(data[1])
