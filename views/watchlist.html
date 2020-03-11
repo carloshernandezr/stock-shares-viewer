@@ -1,95 +1,93 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Heckin' Stonks!</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/watchlist.css">
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <script src="/js/watchlist.js"></script>
-</head>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Heckin' Stonks!</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+        <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+        <link rel="stylesheet" type="text/css" href="/css/watchlist.css">
+        <script src="https://code.jquery.com/jquery.js"></script>
+        <script src="/js/watchlist.js"></script>
+    </head>
 
-<body>
-    <!-- Navbar -->
-    <nav class="navbar is-info">
-        <div class="navbar-brand">
-            <a class="navbar-item" href="http://bulma.io">
-                <img src="http://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox"
-                    width="112" height="28">
-            </a>
-            <div class="navbar-burger burger" data-target="navMenubd-example">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-
-        <div id="navMenubd-example" class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item " href="/">
-                    Home
-                </a>
-                <a class="navbar-item " href="/watchlist">
-                    Watchlists
-                </a>
-                <a class="navbar-item " href="h#">
-                    Portfolios
-                </a>
-                <a class="navbar-item " href="#">
-                    About
-                </a>
-                <a class="navbar-item " href="#">
-                    Contact
-                </a>
-                <a class="navbar-item " href="#">
-                    Report an issue
-                </a>
+    <body>
+        <!-- Navbar -->
+        <nav class="navbar is-info">
+            <div class="navbar-brand">
+                
+                <div class="navbar-burger burger" data-target="navMenubd-example">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </div>
 
-        </div>
-    </nav>
-    <!-- Aside Menu -->
-    <div class="columns is-fullheight">
-        <div class="column is-2 is-sidebar-menu is-hidden-mobile">
-            <aside class="menu">
-                <div class="field has-addons">
-                    <div class="control">
-                        <input class="input" id="tickerInput" type="text" placeholder="Find a stock">
-                    </div>
-                    <div class="control">
-                        <a class="button is-info" id="tickerBtn">
-                            Search
-                        </a>
-                    </div>
+            <div id="navMenubd-example" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item " href="/">
+                        Home
+                    </a>
+                    <a class="navbar-item " href="/watchlist">
+                        Watchlists
+                    </a>
+                    <a class="navbar-item " href="#">
+                        About
+                    </a>
+                    <a class="navbar-item " href="#">
+                        Contact
+                    </a>
                 </div>
-                <div class="field has-addons">
-                    <div class="control">
-                        <input class="input" id="listInput" type="text" placeholder="Enter New Watchlist">
+            </div>
+        </nav>
+        <br>
+        <!-- Aside Menu -->
+
+        <div class="columns is-centered is-variable is-5 is-fullheight">
+            <div class="column is-narrow is-sidebar-menu is-hidden-mobile is-offset-1">
+                <aside class="menu">
+                    <div class="field has-addons">
+                        <div class="control">
+                            <input class="input" id="tickerInput" type="text" placeholder="Find a stock">
+                        </div>
+                        <p class="control">
+                            <button class="button is-info" id="tickerBtn">
+                                <span class="icon">
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                </span>
+                            </button>
+                        </p>
                     </div>
-                    <div class="control">
-                        <a class="button is-info" id="newListBtn">
-                            Add watchlist
-                        </a>
+                    <div class="field has-addons">
+                        <div class="control">
+                            <input class="input" id="listInput" type="text" placeholder="Create New Watchlist">
+                        </div>
+                        <p class="control">
+                            <button class="button is-info" id="newListBtn">
+                                <span class="icon">
+                                    <i class="fas fa-plus"></i>
+                                </span>
+                            </button>
+                        </p>
                     </div>
-                </div>
-                <p class="menu-label">
-                    Watchlists
-                </p>
-                <ul class="menu-list" id="watchAside">
-                </ul>
-            </aside>
-        </div>
-        <!-- Main Content Area -->
-        <div class="column is-main-content" id="watchlistContent">
-            <button class="delete deleteBTN" aria-label="delete" data-attribute="${data.symbol}"></button>
+                    <p class="menu-label">
+                        Watchlists
+                    </p>
+                    <ul class="menu-list" id="watchAside">
+                    </ul>
+                </aside>
+            </div>
+
+            <!-- Main Content Area -->
+
+            <div class="column is-main-content" id="watchlistContent"></div>
+            <div class="column is-1"></div>
 
         </div>
-    </div>
-    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-</body>
+
+        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+        <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    </body>
 
 </html>
