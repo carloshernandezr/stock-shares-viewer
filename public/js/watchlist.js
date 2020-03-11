@@ -114,9 +114,7 @@ $(document).ready(function () {
     }).then(function (response) {
       $('#watchlistContent').empty()
       const beginColumns = $('<div class="columns is-multiline" id="watchlistColumns">')
-      const columnHeader = $(
-        '<div class="column is-12 has-text-centered has-text-info title"><span>' + clickedWatchlist + '</span></div>'
-      )
+      const columnHeader = $('<div class="column is-12 has-text-centered has-text-info title"><span>' + clickedWatchlist + '</span></div>')
       $('#watchlistContent').append(columnHeader, beginColumns)
       for (const key in response) {
         const ApiObj = response[key].quote
@@ -292,7 +290,12 @@ $(document).ready(function () {
       console.log('response: ', response)
       $('#watchlistContent').empty()
       const beginColumns = $('<div class="columns is-multiline" id="watchlistColumns">')
-      $('#watchlistContent').append(beginColumns)
+      const columnHeader = $(
+        '<div class="column is-12 has-text-centered has-text-info title"><span>' +
+          group +
+          '</span></div>'
+      )
+      $('#watchlistContent').append(columnHeader, beginColumns)
       for (const key in response) {
         const ApiObj = response[key].quote
         const percentYtd = (ApiObj.ytdChange * 100).toFixed(1)
