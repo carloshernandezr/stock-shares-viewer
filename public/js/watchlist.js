@@ -70,12 +70,28 @@ $(document).ready(function () {
         symbol: symbol
       }
     }).then(
-      function (response) {
-        console.log('API response', response)
+      function (result) {
+        console.log('API response', result)
         console.log('added stock to watchlis db')
+
+          alert("is saved now")
+        console.log(result)
+        MessageSave(GroupSearched)
       }
+    ).fail(err => console.log(JSON.stringify(err, null, 2), alert('error')
+    )
+      // alert('error')
+
     )
   })
+  function MessageSave (namg) {
+    $('#footerBox').empty()
+    $('#footerBox').append('<h1  class="title is-1"> Saved successful into Watchlist ' + namg + ' </h1>')
+    setTimeout(function () {
+      $('#newListBtn2').remove()
+      $('#footerBox').hide(5000)
+    }, 3000)
+  }
 
   $('body').on('click', '#newListBtn2', function (event) {
     event.preventDefault()
@@ -182,9 +198,13 @@ $(document).ready(function () {
         <i class="fas fa-chart-line"></i>
       </span>
     </p>
-    <div class="control">
-    <button type="submit" id="saveWL"  data-symbol="${data[0].symbol}" class="button is-info">Save</button>
-  </div>
+    <div>
+      <div class="control">
+        <button type="submit" id="saveWL"  data-symbol="${data[0].symbol}" class="button is-info">Save</button>
+      </div>
+    </div>
+
+  <div class="container">ok</div>
   </div>
 
   </div>

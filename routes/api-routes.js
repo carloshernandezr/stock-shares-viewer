@@ -13,7 +13,7 @@ const sandboxApiKey = 'Tpk_34cea288c0494864ae04a08d5ad02dc2'
 // Routes
 // =============================================================
 module.exports = function (app) {
-  app.get('/api/watchlist', function (req, res) {
+  app.get('/api/watchlist', function (_req, res) {
     db.Group.findAll({
       include: db.Watchlist
       // where: db.Group.groupId = 1
@@ -57,8 +57,10 @@ module.exports = function (app) {
         ticker: symbol,
         GroupId: id
       }
-      db.Watchlist.create(obj).then(function (result) {
-        return res.json(result)
+      db.Watchlist.create(obj).then(function (_result) {
+        return res.json(_result)
+      }).catch(function (err) {
+        return res.status(400).json(err)
       })
     })
   })
@@ -132,7 +134,7 @@ module.exports = function (app) {
           GroupId: groupId,
           ticker: req.body.stock
         }
-      }).then(function (result) {
+      }).then(function (_result) {
         // need to repopulate watchlist messages after new api hit
         db.Group.findAll({
           include: db.Watchlist,
