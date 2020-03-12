@@ -72,11 +72,11 @@ $(document).ready(function () {
         symbol: symbol
       }
     }).then(
-      function (result) {
-        console.log('API response', result)
+      function (response) {
+        console.log('API response', response)
         console.log('added stock to watchlis db')
 
-        console.log(result)
+        console.log(response)
         MessageSave(GroupSearched)
       }
     ).fail(err => console.log(JSON.stringify(err, null, 2), MessageErr()
