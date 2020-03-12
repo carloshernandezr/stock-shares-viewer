@@ -309,7 +309,7 @@ $(document).ready(function () {
           low52: ApiObj.week52Low ? ApiObj.week52Low : 'NA',
           high52: ApiObj.week52High ? ApiObj.week52High : 'NA',
           marketCap: ApiObj.marketCap ? ApiObj.marketCap : 'NA',
-          ytdChange: percentYtd ? percentYtd : 'NA',
+          ytdChange: percentYtd || 'NA',
           isUSMarketOpen: ApiObj.isUSMarketOpen ? ApiObj.isUSMarketOpen : 'NA'
         }
         createWatchlist(data)
