@@ -52,23 +52,11 @@ $(document).ready(function () {
   $('#newListBtn').on('click', function (event) {
     event.preventDefault()
     const newGroup = $('#listInput').val()
-    insertNewGroup(newGroup)
-    // $('#listInput').val('')
+    insertNewGroup({ groupName: newGroup }, newGroup)
   })
 
-  function insertNewGroup (listData) {
-    // $.post('/api/watchlist', listData).then(getWatchlists, MessageSaveG).fail(err => console.log(JSON.stringify(err, null, 2), MessageErrG()))
-
-    $.ajax('/api/watchlist', {
-      type: 'POST',
-      data: {
-        groupName: listData
-      }
-    }).then(
-      function (response) {
-        MessageSaveG()
-      }
-    ).fail(err => console.log(JSON.stringify(err, null, 2), MessageErrG(listData)))
+  function insertNewGroup (gr, ng) {
+    $.post('/api/watchlist', gr).then(MessageSaveG, getWatchlists).fail(err => console.log(JSON.stringify(err, null, 2), MessageErrG(ng)))
   }
 
   function MessageErrG (wL) {
@@ -76,8 +64,6 @@ $(document).ready(function () {
     popupS.alert({
       content: 'ERR: The Watchlist name:' + ' "' + wL + '" ' + ' already exist'
     })
-    // $('#divSelect').hide(1000)
-    // }, 500)
   }
 
   function MessageSaveG (namg) {
