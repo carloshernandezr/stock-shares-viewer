@@ -148,6 +148,8 @@ module.exports = function (app) {
           axios.get(queryUrl)
             .then(function (result) {
               res.json(result.data)
+            }).catch(function (err) {
+              res.status(400).json(err)
             })
         })
       })
