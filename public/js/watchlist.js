@@ -114,7 +114,7 @@ $(document).ready(function () {
     }).then(function (response) {
       $('#watchlistContent').empty()
       const beginColumns = $('<div class="columns is-multiline" id="watchlistColumns">')
-      const columnHeader = $('<div class="column is-12 has-text-centered has-text-info title"><span>' + clickedWatchlist + '</span></div>')
+      const columnHeader = $(`<div class="column is-12 has-text-centered has-text-info title"><span id='groupTitle' data-group="${clickedWatchlist}">${clickedWatchlist}</span></div>`)
       $('#watchlistContent').append(columnHeader, beginColumns)
       for (const key in response) {
         const ApiObj = response[key].quote
@@ -135,18 +135,20 @@ $(document).ready(function () {
         }
         createWatchlist(data)
       }
-      // Attaches event listener after creating messages
-      // handles delete stock functionality
-      $('.deleteBTN').on('click', function (event) {
-        event.preventDefault()
-        const symbol = this.dataset.symbol
-        // console.log('clickedwatchlist: ', clickedWatchlist)
-        deleteStock(symbol, clickedWatchlist)
-      })
       const endColumns = $(`</div>
       </div>`)
       $('#watchlistContent').append(endColumns)
     })
+  })
+  // Attaches event listener to delete button
+  // handles delete stock functionality
+  $('#watchlistContent').on('click', 'button', function (event) {
+    event.preventDefault()
+    const symbol = this.dataset.symbol
+    const group = $('#groupTitle').data('group')
+    console.log('group: ', group)
+    // console.log('clickedwatchlist: ', clickedWatchlist)
+    deleteStock(symbol, group)
   })
   function createMessage (data) {
     const newMessage = $(`<article class="message">
@@ -290,11 +292,7 @@ $(document).ready(function () {
       console.log('response: ', response)
       $('#watchlistContent').empty()
       const beginColumns = $('<div class="columns is-multiline" id="watchlistColumns">')
-      const columnHeader = $(
-        '<div class="column is-12 has-text-centered has-text-info title"><span>' +
-          group +
-          '</span></div>'
-      )
+      const columnHeader = $(`<div class="column is-12 has-text-centered has-text-info title"><span id='groupTitle' data-group="${group}">${group}</span></div>`)
       $('#watchlistContent').append(columnHeader, beginColumns)
       for (const key in response) {
         const ApiObj = response[key].quote
