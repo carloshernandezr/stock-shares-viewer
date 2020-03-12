@@ -287,6 +287,10 @@ $(document).ready(function () {
       data: {
         stock: stock,
         group: group
+      },
+      error: function (err) {
+        $('#watchlistContent').empty()
+        $('#watchlistContent').html(err.statusText + ': No stocks saved in the ' + group + ' watchlist')
       }
     }).then(function (response) {
       console.log('response: ', response)
