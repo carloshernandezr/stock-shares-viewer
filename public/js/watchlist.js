@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
   const watchAside = $('#watchAside')
 
   let listSelect = []
@@ -14,6 +15,8 @@ $(document).ready(function () {
 
   function getWatchlists () {
     $.get('/api/watchlist', function (data) {
+
+
       const array = []
       data.forEach(element => {
         if (element.isWatchlist) {
@@ -74,9 +77,10 @@ $(document).ready(function () {
         console.log('API response', result)
         console.log('added stock to watchlis db')
 
-          alert("is saved now")
+        //alert('is saved now')
         console.log(result)
         MessageSave(GroupSearched)
+      
       }
     ).fail(err => console.log(JSON.stringify(err, null, 2), alert('error')
     )
@@ -85,6 +89,10 @@ $(document).ready(function () {
     )
   })
   function MessageSave (namg) {
+    popupS.alert({
+      content: 'Hello'
+    })
+
     $('#footerBox').empty()
     $('#footerBox').append('<h1  class="title is-1"> Saved successful into Watchlist ' + namg + ' </h1>')
     setTimeout(function () {
