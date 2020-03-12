@@ -82,13 +82,32 @@ $(document).ready(function () {
         console.log(result)
         MessageSave(GroupSearched)
       }
-    ).fail(err => console.log(JSON.stringify(err, null, 2), alert('error')
+    ).fail(err => console.log(JSON.stringify(err, null, 2), MessageErr()
     )
       // alert('error')
 
     )
   })
+  function MessageErr (namg) {
+    // eslint-disable-next-line no-undef
+    popupS.alert({
+      content: 'ERR: This stock exist in the selected watchlist'
+    })
+    // $('#saveWL').remove()
+    // $('#footerBox').empty()
+    // $('#footerBox').append('<h1  class="title is-1"> Saved successful into Watchlist ' + namg + ' </h1>')
+    // setTimeout(function () {
+      // $('#saveWL').remove()
+      // $('#mySelect').remove()
+     // $('#divSelect').remove()
+      
+
+      $('#divSelect').hide(1000)
+    // }, 500)
+  }
+
   function MessageSave (namg) {
+    // eslint-disable-next-line no-undef
     popupS.alert({
       content: 'Stock Saved Successfull'
     })
@@ -180,19 +199,19 @@ $(document).ready(function () {
     <div class="columns">
       <div class="column">
         <div class="message-header has-text-warning">
-          ${data[0].company ? data[0].company : 'NA'}
+          ${data[0].company}
         </div>
         <div class="message-body">
           <ul>
           <li>${data[0].exchange} - ${data[0].symbol}</li>
-          <li>Price: ${data[0].currentPrice ? data[0].currentPrice : 'NA'} USD</li>
-          <li>Open: ${data[0].open ? data[0].open : 'NA'} </li>
-          <li>High: ${data[0].high ? data[0].high : 'NA'} </li>
-          <li>Low: ${data[0].low ? data[0].low : 'NA'} </li>
-          <li>52-wk High: ${data[0].high52 ? data[0].high52 : 'NA'} </li>
-          <li>52-wk Low: ${data[0].low52 ? data[0].low52 : 'NA'} </li>
-          <li>Market Cap: ${data[0].marketCap ? data[0].marketCap : 'NA'} </li>
-          <li>YTD%: ${data[0].ytdChange ? data[0].ytdChange : 'NA'} </li>
+          <li>Price: ${data[0].currentPrice} USD</li>
+          <li>Open: ${data[0].open} </li>
+          <li>High: ${data[0].high} </li>
+          <li>Low: ${data[0].low} </li>
+          <li>52-wk High: ${data[0].high52} </li>
+          <li>52-wk Low: ${data[0].low52} </li>
+          <li>Market Cap: ${data[0].marketCap} </li>
+          <li>YTD%: ${data[0].ytdChange} </li>
           </ul>
         <br>
         <div class="field is-horizontal" id="divSelect">
@@ -288,15 +307,15 @@ $(document).ready(function () {
   </div>
   <div class="message-body">
   <ul>
-  <li>${data.exchange ? data.exchange : 'NA'} - ${data.symbol ? data.symbol : 'NA'}</li>
+  <li>${data.exchange} - ${data.symbol}</li>
   <li><span id="priceEmphasis">${data.currentPrice}</span> USD</li>
-  <li>Open: ${data.open ? data.open : 'NA'}</li>
-  <li>High: ${data.high ? data.high : 'NA'}</li>
-  <li>Low: ${data.low ? data.low : 'NA'}</li>
-  <li>52-wk High: ${data.high52 ? data.high52 : 'NA'}</li>
-  <li>52-wk Low: ${data.low52 ? data.low52 : 'NA'}</li>
-  <li>Market Cap: ${data.marketCap ? data.marketCap : 'NA'}</li>
-  <li>YTD: ${data.ytdChange ? data.ytdChange : 'NA'}%</li>
+  <li>Open: ${data.open}</li>
+  <li>High: ${data.high}</li>
+  <li>Low: ${data.low}</li>
+  <li>52-wk High: ${data.high52}</li>
+  <li>52-wk Low: ${data.low52}</li>
+  <li>Market Cap: ${data.marketCap}</li>
+  <li>YTD: ${data.ytdChange}%</li>
   </ul>
   </div>
   </article>
@@ -325,18 +344,18 @@ $(document).ready(function () {
         const ApiObj = response[key].quote
         const percentYtd = (ApiObj.ytdChange * 100).toFixed(1)
         const data = {
-          company: ApiObj.companyName ? ApiObj.companyName : 'NA',
-          symbol: ApiObj.symbol ? ApiObj.symbol : 'NA',
-          exchange: ApiObj.primaryExchange ? ApiObj.primaryExchange : 'NA',
-          currentPrice: ApiObj.latestPrice ? ApiObj.latestPrice : 'NA',
-          open: ApiObj.open ? ApiObj.open : 'NA',
-          high: ApiObj.close ? ApiObj.close : 'NA',
-          low: ApiObj.low ? ApiObj.low : 'NA',
-          low52: ApiObj.week52Low ? ApiObj.week52Low : 'NA',
-          high52: ApiObj.week52High ? ApiObj.week52High : 'NA',
-          marketCap: ApiObj.marketCap ? ApiObj.marketCap : 'NA',
-          ytdChange: percentYtd || 'NA',
-          isUSMarketOpen: ApiObj.isUSMarketOpen ? ApiObj.isUSMarketOpen : 'NA'
+          company: ApiObj.companyName,
+          symbol: ApiObj.symbol,
+          exchange: ApiObj.primaryExchange,
+          currentPrice: ApiObj.latestPrice,
+          open: ApiObj.open,
+          high: ApiObj.close,
+          low: ApiObj.low,
+          low52: ApiObj.week52Low,
+          high52: ApiObj.week52High,
+          marketCap: ApiObj.marketCap,
+          ytdChange: percentYtd,
+          isUSMarketOpen: ApiObj.isUSMarketOpen
         }
         createWatchlist(data)
       }
