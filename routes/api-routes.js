@@ -19,6 +19,8 @@ module.exports = function (app) {
       include: db.Watchlist
     }).then(function (result) {
       return res.json(result)
+    }).catch(function (err) {
+      return res.status(400).json(err)
     })
   })
   // Gather API data when clicking watchlist data
