@@ -61,8 +61,8 @@ module.exports = function (app) {
         ticker: symbol,
         GroupId: id
       }
-      db.Watchlist.create(obj).then(function (_result) {
-        return res.json(_result)
+      db.Watchlist.create(obj).then(function (result) {
+        return res.json(result)
       }).catch(function (err) {
         return res.status(400).json(err)
       })
