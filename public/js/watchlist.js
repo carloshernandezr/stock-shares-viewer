@@ -51,8 +51,14 @@ $(document).ready(function () {
 
   $('#newListBtn').on('click', function (event) {
     event.preventDefault()
-    const newGroup = $('#listInput').val()
-    insertNewGroup({ groupName: newGroup }, newGroup)
+    if (!$('#listInput').val()) {
+      $('#watchlistContent').empty()
+      $('#watchlistContent').html('Invalid Name input: Empty Text')
+    } else {
+      event.preventDefault()
+      const newGroup = $('#listInput').val()
+      insertNewGroup({ groupName: newGroup }, newGroup)
+    }
   })
 
   function insertNewGroup (gr, ng) {
@@ -100,8 +106,6 @@ $(document).ready(function () {
     popupS.alert({
       content: 'ERR: This Symbol Name:' + ' "' + namW + '" ' + ' already exist in the selected watchlist:' + ' "' + namGp + '" '
     })
-    // $('#divSelect').hide(1000)
-    // }, 500)
   }
 
   function MessageSave (namg) {
