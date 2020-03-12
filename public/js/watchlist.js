@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
   const watchAside = $('#watchAside')
 
   let listSelect = []
@@ -15,8 +14,6 @@ $(document).ready(function () {
 
   function getWatchlists () {
     $.get('/api/watchlist', function (data) {
-
-
       const array = []
       data.forEach(element => {
         if (element.isWatchlist) {
@@ -93,16 +90,7 @@ $(document).ready(function () {
     popupS.alert({
       content: 'ERR: This stock exist in the selected watchlist'
     })
-    // $('#saveWL').remove()
-    // $('#footerBox').empty()
-    // $('#footerBox').append('<h1  class="title is-1"> Saved successful into Watchlist ' + namg + ' </h1>')
-    // setTimeout(function () {
-      // $('#saveWL').remove()
-      // $('#mySelect').remove()
-     // $('#divSelect').remove()
-      
-
-      $('#divSelect').hide(1000)
+    $('#divSelect').hide(1000)
     // }, 500)
   }
 
@@ -115,12 +103,11 @@ $(document).ready(function () {
     // $('#footerBox').empty()
     // $('#footerBox').append('<h1  class="title is-1"> Saved successful into Watchlist ' + namg + ' </h1>')
     // setTimeout(function () {
-      // $('#saveWL').remove()
-      // $('#mySelect').remove()
-     // $('#divSelect').remove()
-      
+    // $('#saveWL').remove()
+    // $('#mySelect').remove()
+    // $('#divSelect').remove()
 
-      $('#divSelect').hide(1000)
+    $('#divSelect').hide(1000)
     // }, 500)
   }
 

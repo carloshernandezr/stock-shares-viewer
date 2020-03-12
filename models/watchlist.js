@@ -8,13 +8,13 @@ module.exports = function (sequelize, DataTypes) {
       }
     }
   }, {
-   indexes: [
-     {
-       unique: true,
-       fields:['ticker', 'GroupId']
-     }
-   ] 
-  } )
+    indexes: [
+      {
+        unique: true,
+        fields: ['ticker', 'GroupId']
+      }
+    ]
+  })
   // ADD ASSOCIATIONS HERE
   Watchlist.associate = function (models) {
     Watchlist.belongsTo(models.Group, {
