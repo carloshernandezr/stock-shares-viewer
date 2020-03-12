@@ -114,7 +114,7 @@ $(document).ready(function () {
     }).then(function (response) {
       $('#watchlistContent').empty()
       const beginColumns = $('<div class="columns is-multiline" id="watchlistColumns">')
-      const columnHeader = $(`<div class="column is-12 has-text-centered has-text-info title"><span id='groupTitle' data-group="${clickedWatchlist}">${clickedWatchlist}</span></div>`)
+      const columnHeader = $(`<div class="column is-12 has-text-centered has-text-dark title is-uppercase"><span id='groupTitle' data-group="${clickedWatchlist}">${clickedWatchlist}</span></div><hr>`)
       $('#watchlistContent').append(columnHeader, beginColumns)
       for (const key in response) {
         const ApiObj = response[key].quote
@@ -147,14 +147,13 @@ $(document).ready(function () {
     const symbol = this.dataset.symbol
     const group = $('#groupTitle').data('group')
     console.log('group: ', group)
-    // console.log('clickedwatchlist: ', clickedWatchlist)
     deleteStock(symbol, group)
   })
   function createMessage (data) {
     const newMessage = $(`<article class="message">
     <div class="columns">
       <div class="column">
-        <div class="message-header">
+        <div class="message-header has-text-warning">
           ${data[0].company}
         </div>
         <div class="message-body">
@@ -176,7 +175,7 @@ $(document).ready(function () {
             </div>
             <div class="field-body">
               <div class="field has-addons">
-                <p class="control has-icons-left">
+                <p class="control has-icons-left is-dark is-outlined">
                   <span class="select" >
                     <select id="mySelect">
                       <option selected>Country</option>
@@ -189,7 +188,7 @@ $(document).ready(function () {
                   </span>
                 </p>
                 <div class="control">
-                  <button type="submit" id="saveWL"  data-symbol="${data[0].symbol}" class="button is-info">
+                  <button type="submit" id="saveWL"  data-symbol="${data[0].symbol}" class="button is-dark is-outlined">
                     <span class="icon">
                       <i class="fas fa-plus"></i>
                     </span>
@@ -257,11 +256,9 @@ $(document).ready(function () {
   function createWatchlist (data) {
     const columnsContent = $(`<div class="column is-half">
   <article class="message">
-  <div class="message-header">
+  <div class="message-header has-text-warning">
     ${data.company}
-    <span class="tag">Delete
     <button class="delete deleteBTN" aria-label="delete" data-symbol="${data.symbol}"></button>
-    </span>
   </div>
   <div class="message-body">
   <ul>
@@ -296,7 +293,7 @@ $(document).ready(function () {
       console.log('response: ', response)
       $('#watchlistContent').empty()
       const beginColumns = $('<div class="columns is-multiline" id="watchlistColumns">')
-      const columnHeader = $(`<div class="column is-12 has-text-centered has-text-info title"><span id='groupTitle' data-group="${group}">${group}</span></div>`)
+      const columnHeader = $(`<div class="column is-12 has-text-centered has-text-dark title is-uppercase"><span id='groupTitle' data-group="${group}">${group}</span></div><hr>`)
       $('#watchlistContent').append(columnHeader, beginColumns)
       for (const key in response) {
         const ApiObj = response[key].quote
