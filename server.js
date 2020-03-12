@@ -1,6 +1,5 @@
 var express = require('express')
 var db = require('./models')
- 
 
 var PORT = process.env.PORT || 4000
 var app = express()
