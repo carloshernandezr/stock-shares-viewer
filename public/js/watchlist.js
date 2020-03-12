@@ -66,7 +66,7 @@ $(document).ready(function () {
     })
   }
 
-  function MessageSaveG (namg) {
+  function MessageSaveG () {
     // eslint-disable-next-line no-undef
     popupS.alert({
       content: 'New Watchlist Saved Successfull'
@@ -88,22 +88,17 @@ $(document).ready(function () {
       }
     }).then(
       function (response) {
-        console.log('API response', response)
-        console.log('added stock to watchlis db')
-
-        console.log(response)
         MessageSave(GroupSearched)
       }
-    ).fail(err => console.log(JSON.stringify(err, null, 2), MessageErr()
+    ).fail(err => console.log(JSON.stringify(err, null, 2), MessageErr(symbol, GroupSearched)
     )
-      // alert('error')
 
     )
   })
-  function MessageErr (namg) {
+  function MessageErr (namW, namGp) {
     // eslint-disable-next-line no-undef
     popupS.alert({
-      content: 'ERR: This stock exist in the selected watchlist'
+      content: 'ERR: This Symbol Name:' + ' "' + namW + '" ' + ' already exist in the selected watchlist:' + ' "' + namGp + '" '
     })
     // $('#divSelect').hide(1000)
     // }, 500)
