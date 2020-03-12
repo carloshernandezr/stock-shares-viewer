@@ -52,45 +52,29 @@ $(document).ready(function () {
   $('#newListBtn').on('click', function (event) {
     event.preventDefault()
     const newGroup = $('#listInput').val()
-    // insertNewGroup(newGroup)
+    insertNewGroup(newGroup)
     // $('#listInput').val('')
+  })
+
+  function insertNewGroup (listData) {
+    // $.post('/api/watchlist', listData).then(getWatchlists, MessageSaveG).fail(err => console.log(JSON.stringify(err, null, 2), MessageErrG()))
 
     $.ajax('/api/watchlist', {
       type: 'POST',
       data: {
-        groupName: newGroup
+        groupName: listData
       }
     }).then(
       function (response) {
         MessageSaveG()
       }
-    ).fail(err => console.log(JSON.stringify(err, null, 2), MessageErrG(newGroup)))
-  })
-
-  function insertNewGroup (listData) {
-    $.post('/api/watchlist', listData).then(getWatchlists, MessageSaveG).fail(err => console.log(JSON.stringify(err, null, 2), MessageErrG()))
-    // )
-    // )
-    // $.ajax('/api/watchlist', {
-    //   type: 'POST',
-    //   data: {
-    //     group: listData
-    //   }
-    // }).then(
-    //   function (response) {
-    //     MessageSaveG()
-    //   }
-    // ).fail(err => console.log(JSON.stringify(err, null, 2), MessageErrG()
-    // )
-    //   // alert('error')
-
-    // )
+    ).fail(err => console.log(JSON.stringify(err, null, 2), MessageErrG(listData)))
   }
 
   function MessageErrG (wL) {
     // eslint-disable-next-line no-undef
     popupS.alert({
-      content: 'ERR: This Watchlist' + '"' + wL + '"' + ' name already exist'
+      content: 'ERR: The Watchlist name:' + ' "' + wL + '" ' + ' already exist'
     })
     // $('#divSelect').hide(1000)
     // }, 500)
