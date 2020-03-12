@@ -26,7 +26,6 @@ $(document).ready(function () {
       })
       listSelect = []
       listSelect = array
-      console.log(array)
       initializeRows(array)
     })
   }
@@ -43,6 +42,8 @@ $(document).ready(function () {
       watchAside.append(newInputRow)
     }
   }
+
+  // populates the dropdown list when adding to watchlist
   function createNewList (arr) {
     $('#mySelect').empty()
     for (let i = 0; i < listSelect.length; i++) {
@@ -55,6 +56,7 @@ $(document).ready(function () {
     event.preventDefault()
     const newGroup = $('#listInput').val()
     insertNewGroup({ groupName: newGroup })
+    $('#listInput').val('')
   })
 
   function insertNewGroup (listData) {
@@ -101,23 +103,21 @@ $(document).ready(function () {
     }, 3000)
   }
 
-  $('body').on('click', '#newListBtn2', function (event) {
+  $('#searchForm').on('submit', function (event) {
     event.preventDefault()
-    console.log(watchlists)
-    $('#footerBox').toggle()
-    createNewList()
-  })
-
-  $('#tickerBtn').on('click', function (event) {
-    console.log('test final')
     var ticker = $('#tickerInput').val()
-
+    $('#tickerInput').val('')
     const isRegexTrue = /^[a-zA-Z]+$/.test(ticker)
     if (!isRegexTrue) {
-      console.log('Invalid search input')
+      $('#watchlistContent').empty()
+      $('#watchlistContent').html('Invalid search input')
     } else {
       $.ajax('/api/watchlist/search/' + ticker, {
-        type: 'GET'
+        type: 'GET',
+        error: function (err) {
+          $('#watchlistContent').empty()
+          $('#watchlistContent').html(err.statusText + ': Invalid symbol')
+        }
       }).then(
         function (response) {
           createMessage(response)
@@ -129,11 +129,17 @@ $(document).ready(function () {
   // Handles displaying data when watchlist is clicked
   watchAside.on('click', 'li', function (event) {
     const clickedWatchlist = this.dataset.ticker
-    $.ajax('/api/watchlist/' + clickedWatchlist, function (data) {
+    $.ajax('/api/watchlist/' + clickedWatchlist, {
+      type: 'GET',
+      error: function (err) {
+        $('#watchlistContent').empty()
+        $('#watchlistContent').html(err.statusText + ': No stocks saved in the ' + clickedWatchlist + ' watchlist')
+      }
     }).then(function (response) {
       $('#watchlistContent').empty()
       const beginColumns = $('<div class="columns is-multiline" id="watchlistColumns">')
-      $('#watchlistContent').append(beginColumns)
+      const columnHeader = $(`<div class="column is-12 has-text-centered has-text-dark title is-uppercase"><span id='groupTitle' data-group="${clickedWatchlist}">${clickedWatchlist}</span></div><hr>`)
+      $('#watchlistContent').append(columnHeader, beginColumns)
       for (const key in response) {
         const ApiObj = response[key].quote
         const percentYtd = (ApiObj.ytdChange * 100).toFixed(1)
@@ -153,75 +159,79 @@ $(document).ready(function () {
         }
         createWatchlist(data)
       }
-      // Attaches event listener after creating messages
-      // handles delete stock functionality
-      $('.deleteBTN').on('click', function (event) {
-        event.preventDefault()
-        const symbol = this.dataset.symbol
-        // console.log('clickedwatchlist: ', clickedWatchlist)
-        deleteStock(symbol, clickedWatchlist)
-      })
       const endColumns = $(`</div>
       </div>`)
       $('#watchlistContent').append(endColumns)
     })
   })
+  // Attaches event listener to delete button
+  // handles delete stock functionality
+  $('#watchlistContent').on('click', 'button', function (event) {
+    event.preventDefault()
+    const symbol = this.dataset.symbol
+    const group = $('#groupTitle').data('group')
+    console.log('group: ', group)
+    deleteStock(symbol, group)
+  })
   function createMessage (data) {
     const newMessage = $(`<article class="message">
-    <div class="message-header">
-      ${data[0].company}
-    </div>
-    <div class="message-body">
-    <ul>
-    <li>${data[0].exchange} - ${data[0].symbol}</li>
-    <li>Price: ${data[0].currentPrice} USD</li>
-    <li>Open: ${data[0].open} </li>
-    <li>High: ${data[0].high} </li>
-    <li>Low: ${data[0].low} </li>
-    <li>52-wk High: ${data[0].high52} </li>
-    <li>52-wk Low: ${data[0].low52} </li>
-    <li>Market Cap: ${data[0].marketCap} </li>
-    <li>YTD%: ${data[0].ytdChange} </li>
-
-    </ul>
-    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
-
-    <p><a class="button is-info" id="newListBtn2">
-                    Add to watchlist
-                </a></p>
-    </div>
-
-    <div class="footer" id="footerBox">
-
-    <div class="field has-addons">
-    <p class="control has-icons-left">
-      <span class="select" >
-        <select id="mySelect">
-          <option selected>Country</option>
-          <option>Select dropdown</option>
-          <option>With options</option>
-        </select>
-      </span>
-      <span class="icon is-small is-left">
-        <i class="fas fa-chart-line"></i>
-      </span>
-    </p>
-    <div>
-      <div class="control">
-        <button type="submit" id="saveWL"  data-symbol="${data[0].symbol}" class="button is-info">Save</button>
+    <div class="columns">
+      <div class="column">
+        <div class="message-header has-text-warning">
+          ${data[0].company}
+        </div>
+        <div class="message-body">
+          <ul>
+          <li>${data[0].exchange} - ${data[0].symbol}</li>
+          <li>Price: ${data[0].currentPrice} USD</li>
+          <li>Open: ${data[0].open} </li>
+          <li>High: ${data[0].high} </li>
+          <li>Low: ${data[0].low} </li>
+          <li>52-wk High: ${data[0].high52} </li>
+          <li>52-wk Low: ${data[0].low52} </li>
+          <li>Market Cap: ${data[0].marketCap} </li>
+          <li>YTD%: ${data[0].ytdChange} </li>
+          </ul>
+        <br>
+        <div class="field is-horizontal">
+            <div class="field-label">
+              <label class="label">Add To Watchlist</label>
+            </div>
+            <div class="field-body">
+              <div class="field has-addons">
+                <p class="control has-icons-left is-dark is-outlined">
+                  <span class="select" >
+                    <select id="mySelect">
+                      <option selected>Country</option>
+                      <option>Select dropdown</option>
+                      <option>With options</option>
+                    </select>
+                  </span>
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-chart-line"></i>
+                  </span>
+                </p>
+                <div class="control">
+                  <button type="submit" id="saveWL"  data-symbol="${data[0].symbol}" class="button is-dark is-outlined">
+                    <span class="icon">
+                      <i class="fas fa-plus"></i>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-
-  <div class="container">ok</div>
-  </div>
-
-  </div>
-
-  
+      <div class="column">
+        <div id="chartContainer" style="height: 300px; width: 100%;">
+        </div>
+      </div>
     </div>
   </article>`)
     $('#watchlistContent').empty()
     $('#watchlistContent').append(newMessage)
+    createNewList()
   }
   function createChart (data) {
     // console.log(data[1])
@@ -233,13 +243,13 @@ $(document).ready(function () {
       // eslint-disable-next-line no-undef
       var chart = new CanvasJS.Chart('chartContainer', {
         animationEnabled: true,
-        theme: 'light2', // "light1", "light2", "dark1", "dark2"
+        theme: 'dark2', // "light1", "light2", "dark1", "dark2"
         exportEnabled: true,
         title: {
           text: data[0].company
         },
         axisX: {
-          interval: 1,
+          intervalType: 'day',
           valueFormatString: 'MM DD YYYY'
         },
         axisY: {
@@ -256,7 +266,9 @@ $(document).ready(function () {
             type: 'candlestick',
             yValueFormatString: '$##0.00',
             dataPoints: data[1],
-            xValueType: 'dateTime'
+            xValueType: 'dateTime',
+            risingColor: '#66ff33',
+            color: '#ff0000'
           }
         ]
       })
@@ -268,11 +280,9 @@ $(document).ready(function () {
   function createWatchlist (data) {
     const columnsContent = $(`<div class="column is-half">
   <article class="message">
-  <div class="message-header">
+  <div class="message-header has-text-warning">
     ${data.company}
-    <span class="tag">Delete
     <button class="delete deleteBTN" aria-label="delete" data-symbol="${data.symbol}"></button>
-    </span>
   </div>
   <div class="message-body">
   <ul>
@@ -286,31 +296,29 @@ $(document).ready(function () {
   <li>Market Cap: ${data.marketCap}</li>
   <li>YTD: ${data.ytdChange}%</li>
   </ul>
-  CANVAS CHART GOES HERE
-
-  <p><a class="button is-info" id="newListBtn">
-                  Add to watchlist
-              </a></p>
   </div>
   </article>
   </div>`)
     $('#watchlistColumns').append(columnsContent)
   }
   function deleteStock (stock, group) {
-    console.log('stock: ', stock)
-    console.log('group: ', group)
     // AJAX to backend
     $.ajax('/api/watchlist/delete/', {
       type: 'POST',
       data: {
         stock: stock,
         group: group
+      },
+      error: function (err) {
+        $('#watchlistContent').empty()
+        $('#watchlistContent').html(err.statusText + ': No stocks saved in the ' + group + ' watchlist')
       }
     }).then(function (response) {
       console.log('response: ', response)
       $('#watchlistContent').empty()
       const beginColumns = $('<div class="columns is-multiline" id="watchlistColumns">')
-      $('#watchlistContent').append(beginColumns)
+      const columnHeader = $(`<div class="column is-12 has-text-centered has-text-dark title is-uppercase"><span id='groupTitle' data-group="${group}">${group}</span></div><hr>`)
+      $('#watchlistContent').append(columnHeader, beginColumns)
       for (const key in response) {
         const ApiObj = response[key].quote
         const percentYtd = (ApiObj.ytdChange * 100).toFixed(1)

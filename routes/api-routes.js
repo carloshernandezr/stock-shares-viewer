@@ -13,14 +13,15 @@ const sandboxApiKey = 'Tpk_34cea288c0494864ae04a08d5ad02dc2'
 // Routes
 // =============================================================
 module.exports = function (app) {
-  app.get('/api/watchlist', function (_req, res) {
+  // Populating watchlist route
+  app.get('/api/watchlist', function (req, res) {
     db.Group.findAll({
       include: db.Watchlist
-      // where: db.Group.groupId = 1
     }).then(function (result) {
       return res.json(result)
     })
   })
+  // Gather API data when clicking watchlist data
   app.get('/api/watchlist/:clickedWatchlist', function (req, res) {
     const clickedWatchlist = (req.params.clickedWatchlist)
     db.Group.findAll({
@@ -36,9 +37,12 @@ module.exports = function (app) {
       axios.get(queryUrl)
         .then(function (result) {
           res.json(result.data)
+        }).catch(function (err) {
+          res.status(400).json(err)
         })
     })
   })
+  // Gather API data and chart for stock search
   app.post('/api/watchlist/save', function (req, res) {
     const group = (req.body.group)
     const symbol = (req.body.symbol)
@@ -87,7 +91,7 @@ module.exports = function (app) {
           isUSMarketOpen: stockData.isUSMarketOpen
         }
       ]
-
+      // Chart data is gathered here
       const dataPoints = []
 
       for (let i = 0; i < chartStuff.length; i++) {
@@ -108,20 +112,18 @@ module.exports = function (app) {
       }
       data.push(dataPoints)
       res.json(data)
+    }).catch(function (err) {
+      res.status(400).json(err)
     })
   })
-
+  // Create new watchlist functionality
   app.post('/api/watchlist', function (req, res) {
     db.Group.create(req.body).then(function (dbWatchlist) {
       res.json(dbWatchlist)
     })
   })
-
-  // backend delete api hit
+  // Delete stock from watchlist functionality
   app.post('/api/watchlist/delete/', function (req, res) {
-    // const symbol = req.params.symbol
-    // console.log('symbol: ', symbol)
-    // console.log('req.body: ', req.body)
     db.Group.findAll({
       include: db.Watchlist,
       where: {
@@ -134,8 +136,7 @@ module.exports = function (app) {
           GroupId: groupId,
           ticker: req.body.stock
         }
-      }).then(function (_result) {
-        // need to repopulate watchlist messages after new api hit
+      }).then(function (result) {
         db.Group.findAll({
           include: db.Watchlist,
           where: {
@@ -149,9 +150,10 @@ module.exports = function (app) {
           axios.get(queryUrl)
             .then(function (result) {
               res.json(result.data)
+            }).catch(function (err) {
+              res.status(400).json(err)
             })
         })
-        // res.json(result)
       })
     })
   })
