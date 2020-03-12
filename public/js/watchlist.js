@@ -119,16 +119,22 @@ $(document).ready(function () {
       for (const key in response) {
         const ApiObj = response[key].quote
         const percentYtd = (ApiObj.ytdChange * 100).toFixed(1)
+        const currentPrice = (ApiObj.latestPrice).toFixed(2)
+        const open = (ApiObj.open).toFixed(2)
+        const close = (ApiObj.close).toFixed(2)
+        const low = (ApiObj.low).toFixed(2)
+        const week52Low = (ApiObj.week52Low).toFixed(2)
+        const week52High = (ApiObj.week52High).toFixed(2)
         const data = {
           company: ApiObj.companyName,
           symbol: ApiObj.symbol,
           exchange: ApiObj.primaryExchange,
-          currentPrice: ApiObj.latestPrice,
-          open: ApiObj.open,
-          high: ApiObj.close,
-          low: ApiObj.low,
-          low52: ApiObj.week52Low,
-          high52: ApiObj.week52High,
+          currentPrice: currentPrice,
+          open: open,
+          high: close,
+          low: low,
+          low52: week52Low,
+          high52: week52High,
           marketCap: ApiObj.marketCap,
           ytdChange: percentYtd,
           isUSMarketOpen: ApiObj.isUSMarketOpen
@@ -150,6 +156,12 @@ $(document).ready(function () {
     deleteStock(symbol, group)
   })
   function createMessage (data) {
+    const currentPrice = (data[0].currentPrice).toFixed(2)
+    const open = (data[0].open).toFixed(2)
+    const high = (data[0].high).toFixed(2)
+    const low = (data[0].low).toFixed(2)
+    const high52 = (data[0].high52).toFixed(2)
+    const low52 = (data[0].low52).toFixed(2)
     const newMessage = $(`<article class="message">
     <div class="columns">
       <div class="column">
@@ -159,12 +171,12 @@ $(document).ready(function () {
         <div class="message-body">
           <ul>
           <li>${data[0].exchange} - ${data[0].symbol}</li>
-          <li>Price: ${data[0].currentPrice} USD</li>
-          <li>Open: ${data[0].open} </li>
-          <li>High: ${data[0].high} </li>
-          <li>Low: ${data[0].low} </li>
-          <li>52-wk High: ${data[0].high52} </li>
-          <li>52-wk Low: ${data[0].low52} </li>
+          <li>Price: ${currentPrice} USD</li>
+          <li>Open: ${open} </li>
+          <li>High: ${high} </li>
+          <li>Low: ${low} </li>
+          <li>52-wk High: ${high52} </li>
+          <li>52-wk Low: ${low52} </li>
           <li>Market Cap: ${data[0].marketCap} </li>
           <li>YTD%: ${data[0].ytdChange} </li>
           </ul>
@@ -298,16 +310,22 @@ $(document).ready(function () {
       for (const key in response) {
         const ApiObj = response[key].quote
         const percentYtd = (ApiObj.ytdChange * 100).toFixed(1)
+        const currentPrice = (ApiObj.latestPrice).toFixed(2)
+        const open = (ApiObj.open).toFixed(2)
+        const close = (ApiObj.close).toFixed(2)
+        const low = (ApiObj.low).toFixed(2)
+        const week52Low = (ApiObj.week52Low).toFixed(2)
+        const week52High = (ApiObj.week52High).toFixed(2)
         const data = {
           company: ApiObj.companyName,
           symbol: ApiObj.symbol,
           exchange: ApiObj.primaryExchange,
-          currentPrice: ApiObj.latestPrice,
-          open: ApiObj.open,
-          high: ApiObj.close,
-          low: ApiObj.low,
-          low52: ApiObj.week52Low,
-          high52: ApiObj.week52High,
+          currentPrice: currentPrice,
+          open: open,
+          high: close,
+          low: low,
+          low52: week52Low,
+          high52: week52High,
           marketCap: ApiObj.marketCap,
           ytdChange: percentYtd,
           isUSMarketOpen: ApiObj.isUSMarketOpen
