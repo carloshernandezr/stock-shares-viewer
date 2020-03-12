@@ -75,9 +75,32 @@ $(document).ready(function () {
       function (response) {
         console.log('API response', response)
         console.log('added stock to watchlis db')
+
+        console.log(response)
+        MessageSave(GroupSearched)
       }
+    ).fail(err => console.log(JSON.stringify(err, null, 2), MessageErr()
+    )
+      // alert('error')
+
     )
   })
+  function MessageErr (namg) {
+    // eslint-disable-next-line no-undef
+    popupS.alert({
+      content: 'ERR: This stock exist in the selected watchlist'
+    })
+    $('#divSelect').hide(1000)
+    // }, 500)
+  }
+
+  function MessageSave (namg) {
+    // eslint-disable-next-line no-undef
+    popupS.alert({
+      content: 'Stock Saved Successfull'
+    })
+    $('#divSelect').hide(1000)
+  }
 
   $('#searchForm').on('submit', function (event) {
     event.preventDefault()
@@ -169,7 +192,7 @@ $(document).ready(function () {
           <li>YTD%: ${data[0].ytdChange ? data[0].ytdChange : 'NA'} </li>
           </ul>
         <br>
-        <div class="field is-horizontal">
+        <div class="field is-horizontal" id="divSelect">
             <div class="field-label">
               <label class="label">Add To Watchlist</label>
             </div>
