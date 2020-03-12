@@ -52,12 +52,57 @@ $(document).ready(function () {
   $('#newListBtn').on('click', function (event) {
     event.preventDefault()
     const newGroup = $('#listInput').val()
-    insertNewGroup({ groupName: newGroup })
-    $('#listInput').val('')
+    // insertNewGroup(newGroup)
+    // $('#listInput').val('')
+
+    $.ajax('/api/watchlist', {
+      type: 'POST',
+      data: {
+        groupName: newGroup
+      }
+    }).then(
+      function (response) {
+        MessageSaveG()
+      }
+    ).fail(err => console.log(JSON.stringify(err, null, 2), MessageErrG(newGroup)))
   })
 
   function insertNewGroup (listData) {
-    $.post('/api/watchlist', listData).then(getWatchlists)
+    $.post('/api/watchlist', listData).then(getWatchlists, MessageSaveG).fail(err => console.log(JSON.stringify(err, null, 2), MessageErrG()))
+    // )
+    // )
+    // $.ajax('/api/watchlist', {
+    //   type: 'POST',
+    //   data: {
+    //     group: listData
+    //   }
+    // }).then(
+    //   function (response) {
+    //     MessageSaveG()
+    //   }
+    // ).fail(err => console.log(JSON.stringify(err, null, 2), MessageErrG()
+    // )
+    //   // alert('error')
+
+    // )
+  }
+
+  function MessageErrG (wL) {
+    // eslint-disable-next-line no-undef
+    popupS.alert({
+      content: 'ERR: This Watchlist' + '"' + wL + '"' + ' name already exist'
+    })
+    // $('#divSelect').hide(1000)
+    // }, 500)
+  }
+
+  function MessageSaveG (namg) {
+    // eslint-disable-next-line no-undef
+    popupS.alert({
+      content: 'New Watchlist Saved Successfull'
+    })
+    $('#listInput').val('')
+    getWatchlists()
   }
 
   $('body').on('click', '#saveWL', function (event) {
@@ -90,7 +135,7 @@ $(document).ready(function () {
     popupS.alert({
       content: 'ERR: This stock exist in the selected watchlist'
     })
-    $('#divSelect').hide(1000)
+    // $('#divSelect').hide(1000)
     // }, 500)
   }
 
