@@ -79,10 +79,8 @@ $(document).ready(function () {
         console.log('API response', result)
         console.log('added stock to watchlis db')
 
-        //alert('is saved now')
         console.log(result)
         MessageSave(GroupSearched)
-      
       }
     ).fail(err => console.log(JSON.stringify(err, null, 2), alert('error')
     )
@@ -92,15 +90,19 @@ $(document).ready(function () {
   })
   function MessageSave (namg) {
     popupS.alert({
-      content: 'Hello'
+      content: 'Stock Saved Successfull'
     })
+    // $('#saveWL').remove()
+    // $('#footerBox').empty()
+    // $('#footerBox').append('<h1  class="title is-1"> Saved successful into Watchlist ' + namg + ' </h1>')
+    // setTimeout(function () {
+      // $('#saveWL').remove()
+      // $('#mySelect').remove()
+     // $('#divSelect').remove()
+      
 
-    $('#footerBox').empty()
-    $('#footerBox').append('<h1  class="title is-1"> Saved successful into Watchlist ' + namg + ' </h1>')
-    setTimeout(function () {
-      $('#newListBtn2').remove()
-      $('#footerBox').hide(5000)
-    }, 3000)
+      $('#divSelect').hide(1000)
+    // }, 500)
   }
 
   $('#searchForm').on('submit', function (event) {
@@ -193,7 +195,7 @@ $(document).ready(function () {
           <li>YTD%: ${data[0].ytdChange} </li>
           </ul>
         <br>
-        <div class="field is-horizontal">
+        <div class="field is-horizontal" id="divSelect">
             <div class="field-label">
               <label class="label">Add To Watchlist</label>
             </div>
