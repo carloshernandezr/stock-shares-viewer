@@ -1,93 +1,102 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Heckin' Stonks!</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/watchlist.css">
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <script src="/js/watchlist.js"></script>
-</head>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Heckin' Stonks!</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+        <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+        <link rel="stylesheet" type="text/css" href="/css/watchlist.css">
+        <script src="https://code.jquery.com/jquery.js"></script>
+        <script src="/js/watchlist.js"></script>
+        <script src="/js/burger.js"></script>
 
-<body>
-    <!-- Navbar -->
-    <nav class="navbar is-info">
-        <div class="navbar-brand">
-            <a class="navbar-item" href="http://bulma.io">
-                <img src="http://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox"
-                    width="112" height="28">
-            </a>
-            <div class="navbar-burger burger" data-target="navMenubd-example">
-                <span></span>
-                <span></span>
-                <span></span>
+    </head>
+
+    <body>
+        <section class="hero is-medium is-dark is-bold">
+            <!-- Navbar -->
+            <div class="hero-head">
+                <nav class="navbar">
+                    <div class="container">
+                        <div class="navbar-brand">
+                            <p class="navbar-item has-text-warning"><i class="fas fa-chart-line fa-2x"></i></p>
+                            <div class="navbar-burger burger has-text-warning" data-target="navMenubd-example">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+
+                        <div id="navMenubd-example" class="navbar-menu">
+                            <div class="navbar-start">
+                                <a class="navbar-item has-text-warning" href="/">
+                                    Home
+                                </a>
+                                <a class="navbar-item has-text-warning" href="/watchlist">
+                                    Watchlists
+                                </a>
+                                <a class="navbar-item has-text-warning" href="#">
+                                    About
+                                </a>
+                                <a class="navbar-item has-text-warning" href="#">
+                                    Contact
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
             </div>
-        </div>
+        </section>
+        <br>
 
-        <div id="navMenubd-example" class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item " href="/">
-                    Home
-                </a>
-                <a class="navbar-item " href="/watchlist">
-                    Watchlists
-                </a>
-                <a class="navbar-item " href="h#">
-                    Portfolios
-                </a>
-                <a class="navbar-item " href="#">
-                    About
-                </a>
-                <a class="navbar-item " href="#">
-                    Contact
-                </a>
-                <a class="navbar-item " href="#">
-                    Report an issue
-                </a>
+        <!-- Aside Menu -->
+        <div class="columns is-centered is-variable is-5 is-fullheight">
+            <div class="column is-narrow is-sidebar-menu is-offset-1">
+                <aside class="menu">
+                    <form class="field has-addons" id="searchForm">
+                        <div class="control">
+                            <input class="input is-dark is-outlined" id="tickerInput" type="text" placeholder="Find a stock">
+                        </div>
+                        <p class="control">
+                            <button type="submit" class="button is-dark is-outlined" id="tickerBtn">
+                                <span class="icon">
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                </span>
+                            </button>
+                        </p>
+                    </form>
+
+                    <form class="field has-addons" id="watchlistForm">
+                        <div class="control">
+                            <input class="input is-dark is-outlined" id="listInput" type="text" placeholder="Create New Watchlist">
+                        </div>
+                            <p class="control">
+                                <button type="submit" class="button is-dark is-outlined" id="newListBtn">
+                                    <span class="icon">
+                                        <i class="fas fa-plus"></i>
+                                    </span>
+                                </button>
+                            </p>
+                    </form>
+                    <hr>
+                    <p class="menu-label">
+                        Watchlists
+                    </p>
+                    <ul class="menu-list" id="watchAside">
+                    </ul>
+                </aside>
             </div>
 
-        </div>
-    </nav>
-    <!-- Aside Menu -->
-    <div class="columns is-fullheight">
-        <div class="column is-2 is-sidebar-menu is-hidden-mobile">
-            <aside class="menu">
-                <form class="field has-addons" id="searchForm">
-                    <div class="control">
-                        <input class="input" id="tickerInput" type="text" placeholder="Find a stock">
-                    </div>
-                    <div class="control">
-                        <button type="submit" class="button is-info" id="tickerBtn">
-                            Search
-                        </button>
-                    </div>
-                </form>
-                <form class="field has-addons" id='watchlistForm'>
-                    <div class="control">
-                        <input class="input" id="listInput" type="text" placeholder="Enter New Watchlist">
-                    </div>
-                    <div class="control">
-                        <button type="submit" class="button is-info" id="newListBtn">
-                            Add watchlist
-                        </button>
-                    </div>
-                </form>
-                <p class="menu-label">
-                    Watchlists
-                </p>
-                <ul class="menu-list" id="watchAside">
-                </ul>
-            </aside>
-        </div>
-        <!-- Main Content Area -->
-        <div class="column is-main-content" id="watchlistContent">
-        </div>
-    </div>
-    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-</body>
+            <!-- Main Content Area -->
+
+            <div class="column is-main-content" id="watchlistContent"></div>
+            <div class="column is-1"></div>
+
+
+            <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+            <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    </body>
 
 </html>
