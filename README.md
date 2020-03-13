@@ -48,7 +48,7 @@ This is a stock watchlist app that allows users to search for a company by TICKE
 * HTML
 * JavaScript/jQuery
 * Bulma
+* [IEX Cloud](https://iexcloud.io)
 
 ## License
-
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
