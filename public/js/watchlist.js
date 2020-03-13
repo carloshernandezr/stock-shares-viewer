@@ -179,7 +179,7 @@ $(document).ready(function () {
   })
   // Attaches event listener to delete button
   // handles delete stock functionality
-  $('#watchlistContent').on('click', 'button', function (event) {
+  $('#watchlistContent').on('click', '.deleteBTN', function (event) {
     event.preventDefault()
     const symbol = this.dataset.symbol
     const group = $('#groupTitle').data('group')
