@@ -141,37 +141,15 @@ $(document).ready(function () {
   })
   // Handles displaying data when watchlist is clicked
   watchAside.on('click', 'li', function (event) {
-    const clickedWatchlist = this.dataset.ticker
-    $.ajax('/api/watchlist/' + clickedWatchlist, {
+    const group = this.dataset.ticker
+    $.ajax('/api/watchlist/' + group, {
       type: 'GET',
       error: function (err) {
         $('#watchlistContent').empty()
-        $('#watchlistContent').html(err.statusText + ': No stocks saved in the ' + clickedWatchlist + ' watchlist')
+        $('#watchlistContent').html(err.statusText + ': No stocks saved in the ' + group + ' watchlist')
       }
     }).then(function (response) {
-      $('#watchlistContent').empty()
-      const beginColumns = $('<div class="columns is-multiline" id="watchlistColumns">')
-      const columnHeader = $(`<div class="column is-12 has-text-centered has-text-dark title is-uppercase"><span id='groupTitle' data-group="${clickedWatchlist}">${clickedWatchlist}</span></div><hr>`)
-      $('#watchlistContent').append(columnHeader, beginColumns)
-      for (const key in response) {
-        const ApiObj = response[key].quote
-        const percentYtd = (ApiObj.ytdChange * 100).toFixed(1)
-        const data = {
-          company: ApiObj.companyName,
-          symbol: ApiObj.symbol,
-          exchange: ApiObj.primaryExchange,
-          currentPrice: ApiObj.latestPrice,
-          open: ApiObj.open,
-          high: ApiObj.close,
-          low: ApiObj.low,
-          low52: ApiObj.week52Low,
-          high52: ApiObj.week52High,
-          marketCap: ApiObj.marketCap,
-          ytdChange: percentYtd,
-          isUSMarketOpen: ApiObj.isUSMarketOpen
-        }
-        createWatchlist(data)
-      }
+      prepWatchlistData(response, group)
       const endColumns = $(`</div>
       </div>`)
       $('#watchlistContent').append(endColumns)
@@ -179,7 +157,7 @@ $(document).ready(function () {
   })
   // Attaches event listener to delete button
   // handles delete stock functionality
-  $('#watchlistContent').on('click', 'button', function (event) {
+  $('#watchlistContent').on('click', '.deleteBTN', function (event) {
     event.preventDefault()
     const symbol = this.dataset.symbol
     const group = $('#groupTitle').data('group')
@@ -327,30 +305,33 @@ $(document).ready(function () {
         $('#watchlistContent').html(err.statusText + ': No stocks saved in the ' + group + ' watchlist')
       }
     }).then(function (response) {
-      console.log('response: ', response)
-      $('#watchlistContent').empty()
-      const beginColumns = $('<div class="columns is-multiline" id="watchlistColumns">')
-      const columnHeader = $(`<div class="column is-12 has-text-centered has-text-dark title is-uppercase"><span id='groupTitle' data-group="${group}">${group}</span></div><hr>`)
-      $('#watchlistContent').append(columnHeader, beginColumns)
-      for (const key in response) {
-        const ApiObj = response[key].quote
-        const percentYtd = (ApiObj.ytdChange * 100).toFixed(1)
-        const data = {
-          company: ApiObj.companyName ? ApiObj.companyName : 'NA',
-          symbol: ApiObj.symbol ? ApiObj.symbol : 'NA',
-          exchange: ApiObj.primaryExchange ? ApiObj.primaryExchange : 'NA',
-          currentPrice: ApiObj.latestPrice ? ApiObj.latestPrice : 'NA',
-          open: ApiObj.open ? ApiObj.open : 'NA',
-          high: ApiObj.close ? ApiObj.close : 'NA',
-          low: ApiObj.low ? ApiObj.low : 'NA',
-          low52: ApiObj.week52Low ? ApiObj.week52Low : 'NA',
-          high52: ApiObj.week52High ? ApiObj.week52High : 'NA',
-          marketCap: ApiObj.marketCap ? ApiObj.marketCap : 'NA',
-          ytdChange: percentYtd || 'NA',
-          isUSMarketOpen: ApiObj.isUSMarketOpen ? ApiObj.isUSMarketOpen : 'NA'
-        }
-        createWatchlist(data)
-      }
+      prepWatchlistData(response, group)
     })
+  }
+  function prepWatchlistData (foo, group) {
+    console.log('foo: ', foo)
+    $('#watchlistContent').empty()
+    const beginColumns = $('<div class="columns is-multiline" id="watchlistColumns">')
+    const columnHeader = $(`<div class="column is-12 has-text-centered has-text-dark title is-uppercase"><span id='groupTitle' data-group="${group}">${group}</span></div><hr>`)
+    $('#watchlistContent').append(columnHeader, beginColumns)
+    for (const key in foo) {
+      const ApiObj = foo[key].quote
+      const percentYtd = (ApiObj.ytdChange * 100).toFixed(1)
+      const data = {
+        company: ApiObj.companyName ? ApiObj.companyName : 'NA',
+        symbol: ApiObj.symbol ? ApiObj.symbol : 'NA',
+        exchange: ApiObj.primaryExchange ? ApiObj.primaryExchange : 'NA',
+        currentPrice: ApiObj.latestPrice ? ApiObj.latestPrice : 'NA',
+        open: ApiObj.open ? ApiObj.open : 'NA',
+        high: ApiObj.close ? ApiObj.close : 'NA',
+        low: ApiObj.low ? ApiObj.low : 'NA',
+        low52: ApiObj.week52Low ? ApiObj.week52Low : 'NA',
+        high52: ApiObj.week52High ? ApiObj.week52High : 'NA',
+        marketCap: ApiObj.marketCap ? ApiObj.marketCap : 'NA',
+        ytdChange: percentYtd || 'NA',
+        isUSMarketOpen: ApiObj.isUSMarketOpen ? ApiObj.isUSMarketOpen : 'NA'
+      }
+      createWatchlist(data)
+    }
   }
 })
