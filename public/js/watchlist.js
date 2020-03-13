@@ -220,9 +220,9 @@ $(document).ready(function () {
         stock: stock,
         group: group
       },
-      error: function (err) {
+      error: function () {
         $('#watchlistContent').empty()
-        $('#watchlistContent').html(err.statusText + ': No stocks saved in the ' + group + ' watchlist')
+        displayError('No stocks saved in this watchlist')
       }
     }).then(function (response) {
       prepWatchlistData(response, group)
