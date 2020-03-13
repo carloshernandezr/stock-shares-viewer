@@ -107,7 +107,11 @@ $(document).ready(function () {
       content: 'ERR: This Symbol Name:' + ' "' + namW + '" ' + ' already exist in the selected watchlist:' + ' "' + namGp + '" '
     })
   }
-
+  function displayError(str) {
+    popupS.alert({
+      content: str
+    })
+  }
   function MessageSave (namg) {
     // eslint-disable-next-line no-undef
     popupS.alert({
@@ -123,7 +127,7 @@ $(document).ready(function () {
     const isRegexTrue = /^[a-zA-Z]+$/.test(ticker)
     if (!isRegexTrue) {
       $('#watchlistContent').empty()
-      $('#watchlistContent').html('Invalid search input')
+      displayError('Invalid Search Input')
     } else {
       $.ajax('/api/watchlist/search/' + ticker, {
         type: 'GET',
