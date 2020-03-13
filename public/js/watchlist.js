@@ -107,7 +107,8 @@ $(document).ready(function () {
       content: 'ERR: This Ticker Symbol:' + ' "' + namW + '" ' + ' already exists in the selected watchlist:' + ' "' + namGp + '" '
     })
   }
-  function displayError(str) {
+  function displayError (str) {
+    // eslint-disable-next-line no-undef
     popupS.alert({
       content: str
     })
