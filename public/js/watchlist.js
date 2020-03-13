@@ -51,13 +51,34 @@ $(document).ready(function () {
 
   $('#newListBtn').on('click', function (event) {
     event.preventDefault()
-    const newGroup = $('#listInput').val()
-    insertNewGroup({ groupName: newGroup })
-    $('#listInput').val('')
+    if (!$('#listInput').val()) {
+      $('#watchlistContent').empty()
+      $('#watchlistContent').html('Invalid Name input: Empty Text')
+    } else {
+      event.preventDefault()
+      const newGroup = $('#listInput').val()
+      insertNewGroup({ groupName: newGroup }, newGroup)
+    }
   })
 
-  function insertNewGroup (listData) {
-    $.post('/api/watchlist', listData).then(getWatchlists)
+  function insertNewGroup (gr, ng) {
+    $.post('/api/watchlist', gr).then(MessageSaveG, getWatchlists).fail(err => console.log(JSON.stringify(err, null, 2), MessageErrG(ng)))
+  }
+
+  function MessageErrG (wL) {
+    // eslint-disable-next-line no-undef
+    popupS.alert({
+      content: 'ERR: The Watchlist name:' + ' "' + wL + '" ' + ' already exist'
+    })
+  }
+
+  function MessageSaveG () {
+    // eslint-disable-next-line no-undef
+    popupS.alert({
+      content: 'New Watchlist Saved Successfull'
+    })
+    $('#listInput').val('')
+    getWatchlists()
   }
 
   $('body').on('click', '#saveWL', function (event) {
@@ -73,25 +94,18 @@ $(document).ready(function () {
       }
     }).then(
       function (response) {
-        console.log('API response', response)
-        console.log('added stock to watchlis db')
-
-        console.log(response)
         MessageSave(GroupSearched)
       }
-    ).fail(err => console.log(JSON.stringify(err, null, 2), MessageErr()
+    ).fail(err => console.log(JSON.stringify(err, null, 2), MessageErr(symbol, GroupSearched)
     )
-      // alert('error')
 
     )
   })
-  function MessageErr (namg) {
+  function MessageErr (namW, namGp) {
     // eslint-disable-next-line no-undef
     popupS.alert({
-      content: 'ERR: This stock exist in the selected watchlist'
+      content: 'ERR: This Symbol Name:' + ' "' + namW + '" ' + ' already exist in the selected watchlist:' + ' "' + namGp + '" '
     })
-    $('#divSelect').hide(1000)
-    // }, 500)
   }
 
   function MessageSave (namg) {
