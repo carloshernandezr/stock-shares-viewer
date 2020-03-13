@@ -8,7 +8,7 @@ const db = require('../models')
 const axios = require('axios')
 
 // Variables
-const sandboxApiKey = 'Tpk_34cea288c0494864ae04a08d5ad02dc2'
+const sandboxApiKey = process.env.IEXCLOUD_SANDBOX_APIKEY
 
 // Routes
 // =============================================================
@@ -34,6 +34,7 @@ module.exports = function (app) {
       result[0].Watchlists.map(obj => array.push(obj.ticker))
       const combinedTickers = array.join()
       const queryUrl = `https://sandbox.iexapis.com/stable/stock/market/batch?symbols=${combinedTickers}&types=quote&token=${sandboxApiKey}`
+      console.log(queryUrl)
       axios.get(queryUrl)
         .then(function (result) {
           res.json(result.data)
