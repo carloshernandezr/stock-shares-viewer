@@ -51,13 +51,34 @@ $(document).ready(function () {
 
   $('#newListBtn').on('click', function (event) {
     event.preventDefault()
-    const newGroup = $('#listInput').val()
-    insertNewGroup({ groupName: newGroup })
-    $('#listInput').val('')
+    if (!$('#listInput').val()) {
+      $('#watchlistContent').empty()
+      $('#watchlistContent').html('Invalid Name input: Empty Text')
+    } else {
+      event.preventDefault()
+      const newGroup = $('#listInput').val()
+      insertNewGroup({ groupName: newGroup }, newGroup)
+    }
   })
 
-  function insertNewGroup (listData) {
-    $.post('/api/watchlist', listData).then(getWatchlists)
+  function insertNewGroup (gr, ng) {
+    $.post('/api/watchlist', gr).then(MessageSaveG, getWatchlists).fail(err => console.log(JSON.stringify(err, null, 2), MessageErrG(ng)))
+  }
+
+  function MessageErrG (wL) {
+    // eslint-disable-next-line no-undef
+    popupS.alert({
+      content: 'ERR: The Watchlist name:' + ' "' + wL + '" ' + ' already exist'
+    })
+  }
+
+  function MessageSaveG () {
+    // eslint-disable-next-line no-undef
+    popupS.alert({
+      content: 'New Watchlist Saved Successfull'
+    })
+    $('#listInput').val('')
+    getWatchlists()
   }
 
   $('body').on('click', '#saveWL', function (event) {
@@ -73,11 +94,27 @@ $(document).ready(function () {
       }
     }).then(
       function (response) {
-        console.log('API response', response)
-        console.log('added stock to watchlis db')
+        MessageSave(GroupSearched)
       }
+    ).fail(err => console.log(JSON.stringify(err, null, 2), MessageErr(symbol, GroupSearched)
+    )
+
     )
   })
+  function MessageErr (namW, namGp) {
+    // eslint-disable-next-line no-undef
+    popupS.alert({
+      content: 'ERR: This Symbol Name:' + ' "' + namW + '" ' + ' already exist in the selected watchlist:' + ' "' + namGp + '" '
+    })
+  }
+
+  function MessageSave (namg) {
+    // eslint-disable-next-line no-undef
+    popupS.alert({
+      content: 'Stock Saved Successfull'
+    })
+    $('#divSelect').hide(1000)
+  }
 
   $('#searchForm').on('submit', function (event) {
     event.preventDefault()
@@ -169,7 +206,7 @@ $(document).ready(function () {
           <li>YTD%: ${data[0].ytdChange ? data[0].ytdChange : 'NA'} </li>
           </ul>
         <br>
-        <div class="field is-horizontal">
+        <div class="field is-horizontal" id="divSelect">
             <div class="field-label">
               <label class="label">Add To Watchlist</label>
             </div>

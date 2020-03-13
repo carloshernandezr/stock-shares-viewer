@@ -63,6 +63,8 @@ module.exports = function (app) {
       }
       db.Watchlist.create(obj).then(function (result) {
         return res.json(result)
+      }).catch(function (err) {
+        return res.status(400).json(err)
       })
     })
   })
@@ -116,8 +118,12 @@ module.exports = function (app) {
   })
   // Create new watchlist functionality
   app.post('/api/watchlist', function (req, res) {
+    console.log('req.body')
+    console.log(req.body.gr)
     db.Group.create(req.body).then(function (dbWatchlist) {
       res.json(dbWatchlist)
+    }).catch(function (err) {
+      return res.status(400).json(err)
     })
   })
   // Delete stock from watchlist functionality

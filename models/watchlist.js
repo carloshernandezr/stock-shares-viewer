@@ -7,6 +7,13 @@ module.exports = function (sequelize, DataTypes) {
         len: [1, 10]
       }
     }
+  }, {
+    indexes: [
+      {
+        unique: true,
+        fields: ['ticker', 'GroupId']
+      }
+    ]
   })
   // ADD ASSOCIATIONS HERE
   Watchlist.associate = function (models) {

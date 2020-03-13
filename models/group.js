@@ -13,6 +13,13 @@ module.exports = function (sequelize, DataTypes) {
       defaultValue: 1
     }
 
+  }, {
+    indexes: [
+      {
+        unique: true,
+        fields: ['GroupName']
+      }
+    ]
   })
 
   // ADD ASSOCIATIONS HERE
