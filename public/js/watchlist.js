@@ -53,7 +53,7 @@ $(document).ready(function () {
     event.preventDefault()
     if (!$('#listInput').val()) {
       $('#watchlistContent').empty()
-      $('#watchlistContent').html('Invalid Name Input: Empty Text')
+      displayError('Please give watchlist a name')
     } else {
       event.preventDefault()
       const newGroup = $('#listInput').val()
