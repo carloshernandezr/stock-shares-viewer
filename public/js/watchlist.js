@@ -1,17 +1,13 @@
 $(document).ready(function () {
+  // Declare Variables
   const watchAside = $('#watchAside')
-
   let listSelect = []
   let watchlists = []
 
+  // Declare functions
   getWatchlists()
 
-  function initializeRows (arr) {
-    watchAside.empty()
-    const rowsToAdd = []
-    rowsToAdd.push(createNewRow(arr))
-  }
-
+  // Functions
   function getWatchlists () {
     $.get('/api/watchlist', function (data) {
       const array = []
@@ -26,7 +22,11 @@ $(document).ready(function () {
       initializeRows(array)
     })
   }
-
+  function initializeRows (arr) {
+    watchAside.empty()
+    const rowsToAdd = []
+    rowsToAdd.push(createNewRow(arr))
+  }
   function createNewRow (arr) {
     for (let i = 0; i < arr.length; i++) {
       const newInputRow = $(`
@@ -39,8 +39,6 @@ $(document).ready(function () {
       watchAside.append(newInputRow)
     }
   }
-
-  // populates the dropdown list when adding to watchlist
   function createNewList (arr) {
     $('#mySelect').empty()
     for (let i = 0; i < listSelect.length; i++) {
@@ -48,30 +46,17 @@ $(document).ready(function () {
       $('#mySelect').append('<option value=' + listSelect[i] + '> ' + listSelect[i] + ' </option>')
     }
   }
-
-  $('#newListBtn').on('click', function (event) {
-    event.preventDefault()
-    if (!$('#listInput').val()) {
-      $('#watchlistContent').empty()
-      displayError('Please give watchlist a name')
-    } else {
-      event.preventDefault()
-      const newGroup = $('#listInput').val()
-      insertNewGroup({ groupName: newGroup }, newGroup)
-    }
-  })
-
   function insertNewGroup (gr, ng) {
-    $.post('/api/watchlist', gr).then(MessageSaveG, getWatchlists).fail(err => console.log(JSON.stringify(err, null, 2), MessageErrG(ng)))
+    $.post('/api/watchlist', gr)
+      .then(MessageSaveG, getWatchlists)
+      .fail(err => console.log(JSON.stringify(err, null, 2), MessageErrG(ng)))
   }
-
   function MessageErrG (wL) {
     // eslint-disable-next-line no-undef
     popupS.alert({
       content: 'ERR: The Watchlist:' + ' "' + wL + '" ' + ' already exists'
     })
   }
-
   function MessageSaveG () {
     // eslint-disable-next-line no-undef
     popupS.alert({
@@ -80,27 +65,6 @@ $(document).ready(function () {
     $('#listInput').val('')
     getWatchlists()
   }
-
-  $('body').on('click', '#saveWL', function (event) {
-    event.preventDefault()
-    const GroupSearched = $('#mySelect option:selected').text().trim()
-    const symbol = $('#saveWL').data('symbol')
-
-    $.ajax('/api/watchlist/save', {
-      type: 'POST',
-      data: {
-        group: GroupSearched,
-        symbol: symbol
-      }
-    }).then(
-      function (response) {
-        MessageSave(GroupSearched)
-      }
-    ).fail(err => console.log(JSON.stringify(err, null, 2), MessageErr(symbol, GroupSearched)
-    )
-
-    )
-  })
   function MessageErr (namW, namGp) {
     // eslint-disable-next-line no-undef
     popupS.alert({
@@ -120,55 +84,6 @@ $(document).ready(function () {
     })
     $('#divSelect').hide(1000)
   }
-
-  $('#searchForm').on('submit', function (event) {
-    event.preventDefault()
-    var ticker = $('#tickerInput').val()
-    $('#tickerInput').val('')
-    const isRegexTrue = /^[a-zA-Z]+$/.test(ticker)
-    if (!isRegexTrue) {
-      $('#watchlistContent').empty()
-      displayError('Invalid Search Input')
-    } else {
-      $.ajax('/api/watchlist/search/' + ticker, {
-        type: 'GET',
-        error: function () {
-          $('#watchlistContent').empty()
-          displayError('testing error')
-        }
-      }).then(
-        function (response) {
-          createMessage(response)
-          createChart(response)
-        }
-      )
-    }
-  })
-  // Handles displaying data when watchlist is clicked
-  watchAside.on('click', 'li', function (event) {
-    const group = this.dataset.ticker
-    $.ajax('/api/watchlist/' + group, {
-      type: 'GET',
-      error: function () {
-        $('#watchlistContent').empty()
-        displayError('No stocks saved in selected watchlist')
-      }
-    }).then(function (response) {
-      prepWatchlistData(response, group)
-      const endColumns = $(`</div>
-      </div>`)
-      $('#watchlistContent').append(endColumns)
-    })
-  })
-  // Attaches event listener to delete button
-  // handles delete stock functionality
-  $('#watchlistContent').on('click', '.deleteBTN', function (event) {
-    event.preventDefault()
-    const symbol = this.dataset.symbol
-    const group = $('#groupTitle').data('group')
-    console.log('group: ', group)
-    deleteStock(symbol, group)
-  })
   function createMessage (data) {
     const newMessage = $(`<article class="message">
     <div class="columns">
@@ -339,4 +254,81 @@ $(document).ready(function () {
       createWatchlist(data)
     }
   }
+
+  // Click events
+  $('#newListBtn').on('click', function (event) {
+    event.preventDefault()
+    if (!$('#listInput').val()) {
+      $('#watchlistContent').empty()
+      displayError('Please give watchlist a name')
+    } else {
+      event.preventDefault()
+      const newGroup = $('#listInput').val()
+      insertNewGroup({ groupName: newGroup }, newGroup)
+    }
+  })
+  $('body').on('click', '#saveWL', function (event) {
+    event.preventDefault()
+    const GroupSearched = $('#mySelect option:selected').text().trim()
+    const symbol = $('#saveWL').data('symbol')
+    $.ajax('/api/watchlist/save', {
+      type: 'POST',
+      data: {
+        group: GroupSearched,
+        symbol: symbol
+      }
+    }).then(
+      function (response) {
+        MessageSave(GroupSearched)
+      }
+    ).fail(err => console.log(JSON.stringify(err, null, 2), MessageErr(symbol, GroupSearched)))
+  })
+  $('#searchForm').on('submit', function (event) {
+    event.preventDefault()
+    var ticker = $('#tickerInput').val()
+    $('#tickerInput').val('')
+    const isRegexTrue = /^[a-zA-Z]+$/.test(ticker)
+    if (!isRegexTrue) {
+      $('#watchlistContent').empty()
+      displayError('Invalid Search Input')
+    } else {
+      $.ajax('/api/watchlist/search/' + ticker, {
+        type: 'GET',
+        error: function () {
+          $('#watchlistContent').empty()
+          displayError('Invalid search parameters')
+        }
+      }).then(
+        function (response) {
+          createMessage(response)
+          createChart(response)
+        }
+      )
+    }
+  })
+  // Handles displaying data when watchlist is clicked
+  watchAside.on('click', 'li', function (event) {
+    const group = this.dataset.ticker
+    $.ajax('/api/watchlist/' + group, {
+      type: 'GET',
+      error: function () {
+        $('#watchlistContent').empty()
+        displayError('No stocks saved in selected watchlist')
+      }
+    }).then(function (response) {
+      prepWatchlistData(response, group)
+      const endColumns = $(`</div>
+      </div>`)
+      $('#watchlistContent').append(endColumns)
+    })
+  })
+  // Attaches event listener to delete button
+  // handles delete stock functionality
+  $('#watchlistContent').on('click', '.deleteBTN', function (event) {
+    event.preventDefault()
+    const symbol = this.dataset.symbol
+    const group = $('#groupTitle').data('group')
+    console.log('group: ', group)
+    deleteStock(symbol, group)
+  })
 })
