@@ -1,4 +1,4 @@
-# -stock-shares-viewer
+# Stock Watcher!
 
 ## Authors
 * Christopher Ellis
