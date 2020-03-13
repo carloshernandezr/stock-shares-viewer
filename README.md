@@ -9,7 +9,8 @@ This is a stock watchlist app that allows users to search for a company by TICKE
 
 
 ## Instructions
-
+-   Once at the landing page, click on the watchlists link at the top of the page; or if on a screen smaller than desktop click the burger at the top right then click on watchlists
+-   From the watchlists page you can search for a stock by TICKER Symbol
 
 
 ## Screenshot of final output
