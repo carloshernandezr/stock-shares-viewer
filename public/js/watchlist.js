@@ -107,7 +107,12 @@ $(document).ready(function () {
       content: 'ERR: This Ticker Symbol:' + ' "' + namW + '" ' + ' already exists in the selected watchlist:' + ' "' + namGp + '" '
     })
   }
-
+  function displayError (str) {
+    // eslint-disable-next-line no-undef
+    popupS.alert({
+      content: str
+    })
+  }
   function MessageSave (namg) {
     // eslint-disable-next-line no-undef
     popupS.alert({
@@ -123,13 +128,13 @@ $(document).ready(function () {
     const isRegexTrue = /^[a-zA-Z]+$/.test(ticker)
     if (!isRegexTrue) {
       $('#watchlistContent').empty()
-      $('#watchlistContent').html('Invalid Search Input')
+      displayError('Invalid Search Input')
     } else {
       $.ajax('/api/watchlist/search/' + ticker, {
         type: 'GET',
-        error: function (err) {
+        error: function () {
           $('#watchlistContent').empty()
-          $('#watchlistContent').html(err.statusText + ': Invalid symbol')
+          displayError('testing error')
         }
       }).then(
         function (response) {
@@ -144,9 +149,9 @@ $(document).ready(function () {
     const group = this.dataset.ticker
     $.ajax('/api/watchlist/' + group, {
       type: 'GET',
-      error: function (err) {
+      error: function () {
         $('#watchlistContent').empty()
-        $('#watchlistContent').html(err.statusText + ': No Stocks Saved In Watchlist: ' + group)
+        displayError('No stocks saved in selected watchlist')
       }
     }).then(function (response) {
       prepWatchlistData(response, group)
