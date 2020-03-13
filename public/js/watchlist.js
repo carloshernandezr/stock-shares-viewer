@@ -53,7 +53,7 @@ $(document).ready(function () {
     event.preventDefault()
     if (!$('#listInput').val()) {
       $('#watchlistContent').empty()
-      $('#watchlistContent').html('Invalid Name input: Empty Text')
+      $('#watchlistContent').html('Invalid Name Input: Empty Text')
     } else {
       event.preventDefault()
       const newGroup = $('#listInput').val()
@@ -68,14 +68,14 @@ $(document).ready(function () {
   function MessageErrG (wL) {
     // eslint-disable-next-line no-undef
     popupS.alert({
-      content: 'ERR: The Watchlist name:' + ' "' + wL + '" ' + ' already exist'
+      content: 'ERR: The Watchlist:' + ' "' + wL + '" ' + ' already exists'
     })
   }
 
   function MessageSaveG () {
     // eslint-disable-next-line no-undef
     popupS.alert({
-      content: 'New Watchlist Saved Successfull'
+      content: 'New Watchlist Saved Successfully!!!'
     })
     $('#listInput').val('')
     getWatchlists()
@@ -104,14 +104,14 @@ $(document).ready(function () {
   function MessageErr (namW, namGp) {
     // eslint-disable-next-line no-undef
     popupS.alert({
-      content: 'ERR: This Symbol Name:' + ' "' + namW + '" ' + ' already exist in the selected watchlist:' + ' "' + namGp + '" '
+      content: 'ERR: This Ticker Symbol:' + ' "' + namW + '" ' + ' already exists in the selected watchlist:' + ' "' + namGp + '" '
     })
   }
 
   function MessageSave (namg) {
     // eslint-disable-next-line no-undef
     popupS.alert({
-      content: 'Stock Saved Successfull'
+      content: 'Stock Saved Successfully!!!'
     })
     $('#divSelect').hide(1000)
   }
@@ -123,7 +123,7 @@ $(document).ready(function () {
     const isRegexTrue = /^[a-zA-Z]+$/.test(ticker)
     if (!isRegexTrue) {
       $('#watchlistContent').empty()
-      $('#watchlistContent').html('Invalid search input')
+      $('#watchlistContent').html('Invalid Search Input')
     } else {
       $.ajax('/api/watchlist/search/' + ticker, {
         type: 'GET',
@@ -146,7 +146,7 @@ $(document).ready(function () {
       type: 'GET',
       error: function (err) {
         $('#watchlistContent').empty()
-        $('#watchlistContent').html(err.statusText + ': No stocks saved in the ' + group + ' watchlist')
+        $('#watchlistContent').html(err.statusText + ': No Stocks Saved In Watchlist: ' + group)
       }
     }).then(function (response) {
       prepWatchlistData(response, group)
