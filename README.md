@@ -10,7 +10,7 @@
 This is a stock watchlist app that allows users to search for a company by TICKER Symbol and receive a stock quote. The user can then has the option of adding the stock to a watchlist. The user can create a new watchlist in which to store their stocks!!!
 
 ## URL to application on Heroku
-
+https://stock-watcher-ch.herokuapp.com/
 
 
 ## Instructions
